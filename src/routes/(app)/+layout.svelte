@@ -17,7 +17,9 @@
 	</nav>
 </header>
 <div class="spacing"></div>
-<slot />
+<main>
+	<slot />
+</main>
 
 <style lang="scss">
 	header {
