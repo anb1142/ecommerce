@@ -1,5 +1,5 @@
 export type IField = {
-	name?: string;
+	name: string;
 	label?: string;
 	type?: string;
 	required?: boolean;
@@ -9,7 +9,7 @@ export type IField = {
 
 export type IFields = Record<string, IField>;
 
-const formDataToObj = <TFields extends IFields>(fields: TFields, formData: FormData) => {
+const extractFormValues = <TFields extends IFields>(fields: TFields, formData: FormData) => {
 	const keys = Object.keys(fields);
 	const data = {} as {
 		[Key in keyof TFields]: TFields[Key]['type'] extends 'number' ? number : string;
@@ -24,11 +24,17 @@ const formDataToObj = <TFields extends IFields>(fields: TFields, formData: FormD
 	}
 	return data;
 };
-
-// const fields = { name: {}, age: { type: 'number' } };
+// const fieldArrtoObj = <TFields extends IField[]>(fields: IField[]) => {
+// 	const fieldObj = {} as { [k: TFields[number]['name']]: IField };
+// 	for (const field of fields) {
+// 		fieldObj[field.name] = field;
+// 	}
+// 	return fieldObj;
+// };
+// const fields = [{ name: 'name' }, { name: 'age', type: 'number' }];
 // const formData = new FormData();
 // formData.append('name', 'JohnDoe');
 // formData.append('age', '25');
-// const data = formDataToObj(fields, formData);
-
-export default formDataToObj;
+// const data = extractFormValues(fields, formData);
+//      ^?
+export { extractFormValues };
