@@ -1,4 +1,4 @@
-export type IField = {
+type IField = {
 	name: string;
 	label?: string;
 	type?: string;
@@ -7,34 +7,23 @@ export type IField = {
 	options?: string[];
 };
 
-export type IFields = Record<string, IField>;
+type IFields = readonly IField[];
 
-const extractFormValues = <TFields extends IFields>(fields: TFields, formData: FormData) => {
-	const keys = Object.keys(fields);
-	const data = {} as {
-		[Key in keyof TFields]: TFields[Key]['type'] extends 'number' ? number : string;
-	};
-	for (const key of keys) {
-		const value = formData.get(key) as string;
-		if (fields[key]?.type === 'number') {
-			data[key] = Number(value);
-		} else {
-			data[key] = value;
-		}
+const extractFormValues: <const TFields extends IFields>(
+	fields: TFields,
+	formData: FormData
+) => {
+	[Key in TFields[number]['name']]: Extract<TFields[number], { name: Key }>['type'] extends 'number'
+		? number
+		: string;
+} = (fields, formData: FormData) => {
+	const data: any = {};
+	for (const field of fields) {
+		const value = formData.get(field.name) as string;
+		if (field.type === 'number') data[field.name] = Number(value);
+		else data[field.name] = value;
 	}
 	return data;
 };
-// const fieldArrtoObj = <TFields extends IField[]>(fields: IField[]) => {
-// 	const fieldObj = {} as { [k: TFields[number]['name']]: IField };
-// 	for (const field of fields) {
-// 		fieldObj[field.name] = field;
-// 	}
-// 	return fieldObj;
-// };
-// const fields = [{ name: 'name' }, { name: 'age', type: 'number' }];
-// const formData = new FormData();
-// formData.append('name', 'JohnDoe');
-// formData.append('age', '25');
-// const data = extractFormValues(fields, formData);
-//      ^?
+
 export { extractFormValues };
