@@ -1,13 +1,4 @@
-type IField = {
-	name: string;
-	label?: string;
-	type?: string;
-	required?: boolean;
-	value?: string | number;
-	options?: string[];
-};
-
-type IFields = readonly IField[];
+import type { IFields } from "@/schemas";
 
 const extractFormValues: <const TFields extends IFields>(
 	fields: TFields,
