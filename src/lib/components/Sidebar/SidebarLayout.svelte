@@ -28,9 +28,6 @@
 </section>
 
 <style lang="scss">
-	h1 {
-		@apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
-	}
 
 	section {
 		@apply flex min-h-svh;

@@ -17,6 +17,9 @@
 	article {
 		@apply rounded-lg border bg-card text-card-foreground shadow-md;
 		@apply flex flex-col gap-4 p-4;
+		> div {
+			@apply flex;
+		}
 		> img {
 			@apply w-full rounded-lg;
 			@apply aspect-square object-cover;
