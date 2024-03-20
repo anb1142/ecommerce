@@ -18,7 +18,7 @@ export const category = createTable('category', {
 	createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
-export const products = createTable('products', {
+export const product = createTable('product', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 100 }).notNull(),
 	price: numeric('price').notNull(),
@@ -33,7 +33,7 @@ export const image = createTable('image', {
 	url: text('url').notNull()
 });
 
-export const product_images = createTable('product_images', {
+export const product_image = createTable('product_image', {
 	id: serial('id').primaryKey(),
 	product_id: serial('product_id'),
 	image_id: text('image_id').notNull()

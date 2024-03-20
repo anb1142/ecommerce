@@ -1,3 +1,5 @@
+import toTitleCase from '@/utils/totitleCase';
+
 export type IField = {
 	name: string;
 	label?: string;
@@ -5,14 +7,24 @@ export type IField = {
 	required?: boolean;
 	value?: string | number;
 	options?: string[];
+	valType?: 'number' | 'string';
 };
 
 export type IFields = readonly IField[];
 
+const fieldsToCols = (fields: IFields, id = true) => {
+	const rows = [];
+	if (id) rows.push('ID');
+	rows.push(
+		...fields.map((field: IField) => (field.label ? field.label : toTitleCase(field.name)))
+	);
+	return rows;
+};
+
 export const productFields = [
 	{ name: 'name' },
-	{ name: 'price', type: 'number' },
-	{ name: 'descrption', type: 'area' }
+	{ name: 'price', type: 'text' },
+	{ name: 'description', type: 'area' }
 	// { name: 'visible', type: 'boolean' }
 ] as const;
 
@@ -21,4 +33,8 @@ export const categoryFields = [
 	// { name: 'parent_category_id', type: 'options', label: 'Parent Category', required: false },
 ] as const;
 
-export const mediaFields = [{ name: 'caption' }, { name: 'url', label: 'Link' }] as const;
+export const imageFields = [{ name: 'caption' }, { name: 'url', label: 'Link' }] as const;
+
+export const categoryCols = fieldsToCols(categoryFields);
+export const productCols = ['Name', 'Price', 'Visible'];
+export const imageCols = fieldsToCols(imageFields);

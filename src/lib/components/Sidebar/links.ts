@@ -14,8 +14,8 @@ const links: ILinks = {
 		text: 'Categories',
 		new: true
 	},
-	media: {
-		text: 'Media',
+	images: {
+		text: 'Images',
 		new: true
 	},
 	products: {
