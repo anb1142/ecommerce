@@ -24,6 +24,15 @@
 	<Label for={name}>{label}</Label>
 	{#if type === 'area'}
 		<Textarea id={name} {name} />
+	{:else if type === 'boolean'}
+		<Select
+			id={name}
+			{name}
+			opts={[
+				{ value: 'true', text: 'Yes' },
+				{ value: 'false', text: 'No' }
+			]}
+		/>
 	{:else if opts}
 		<Select id={name} {name} {opts} />
 	{:else}
