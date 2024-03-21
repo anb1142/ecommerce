@@ -14,15 +14,18 @@ export type IFields = readonly IField[];
 
 const fieldsToCols = (fields: IFields, id = true) => {
 	const rows = [];
-	if (id) rows.push('ID');
+	if (id) rows.push({ name: 'id', label: 'ID' });
 	rows.push(
-		...fields.map((field: IField) => (field.label ? field.label : toTitleCase(field.name)))
+		...fields.map((field: IField) => ({
+			name: field.name,
+			label: field.label ? field.label : toTitleCase(field.name)
+		}))
 	);
 	return rows;
 };
 
-const removeCols = (arr: string[], cols: string[]) => {
-	return arr.filter((col) => !cols.includes(col));
+const removeCols = (fields: IFields, cols: string[]) => {
+	return fields.filter((col) => !cols.includes(col.name));
 };
 
 export const productFields = [
@@ -40,5 +43,5 @@ export const categoryFields = [
 export const imageFields = [{ name: 'caption' }, { name: 'url', label: 'Link' }] as const;
 
 export const categoryCols = fieldsToCols(categoryFields);
-export const productCols = removeCols(fieldsToCols(productFields), ['Description']);
+export const productCols = removeCols(fieldsToCols(productFields), ['description']);
 export const imageCols = fieldsToCols(imageFields);

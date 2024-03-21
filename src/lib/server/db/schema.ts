@@ -38,3 +38,10 @@ export const product_image = createTable('product_image', {
 	product_id: serial('product_id'),
 	image_id: text('image_id').notNull()
 });
+
+export const tables = {
+	category,
+	product,
+	image,
+	product_image
+};

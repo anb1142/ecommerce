@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { ArrowDownUp } from 'lucide-svelte';
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import type { IFields } from '@/schemas';
+	import { ArrowDownUp } from 'lucide-svelte';
 
-	export let ths: string[] = [];
+	export let ths: IFields = [];
 	export let rows: any = [];
 
-	const sort = (th: string) => {
-		$page.url.searchParams.set('orderBy', th);
+	const sort = async (column: string) => {
+		$page.url.searchParams.set('orderBy', column);
 		goto(`?${$page.url.searchParams.toString()}`);
 	};
 </script>
@@ -17,9 +18,9 @@
 		<thead>
 			<tr>
 				{#each ths as th}
-					<th on:click={() => sort(th)}>
+					<th on:click={() => sort(th.name)}>
 						<div>
-							{th} <span class="sort"><ArrowDownUp class="sort w-4" /></span>
+							{th.label} <span class="sort"><ArrowDownUp class="sort w-4" /></span>
 						</div>
 					</th>
 				{/each}
