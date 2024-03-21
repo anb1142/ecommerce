@@ -21,11 +21,15 @@ const fieldsToCols = (fields: IFields, id = true) => {
 	return rows;
 };
 
+const removeCols = (arr: string[], cols: string[]) => {
+	return arr.filter((col) => !cols.includes(col));
+};
+
 export const productFields = [
 	{ name: 'name' },
 	{ name: 'price', type: 'text' },
-	{ name: 'description', type: 'area' }
-	// { name: 'visible', type: 'boolean' }
+	{ name: 'description', type: 'area' },
+	{ name: 'visible', type: 'boolean' }
 ] as const;
 
 export const categoryFields = [
@@ -36,5 +40,5 @@ export const categoryFields = [
 export const imageFields = [{ name: 'caption' }, { name: 'url', label: 'Link' }] as const;
 
 export const categoryCols = fieldsToCols(categoryFields);
-export const productCols = ['Name', 'Price', 'Visible'];
+export const productCols = removeCols(fieldsToCols(productFields), ['Description']);
 export const imageCols = fieldsToCols(imageFields);
