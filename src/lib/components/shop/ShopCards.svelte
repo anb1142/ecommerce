@@ -7,7 +7,7 @@
 		title: 'asd',
 		subtitle: 'asd'
 	};
-	$: products = [p, p, p, p, p];
+	let products = Array.from({ length: 5 }, (_, i) => ({ ...p, id: i + 1 }));
 </script>
 
 <section>
@@ -15,13 +15,13 @@
 		<ShopCard {...product} />
 	{/each}
 	{#each Array(products.length < 3 ? 3 - products.length : 0) as i}
-		<span />
+		<span></span>
 	{/each}
 </section>
 
 <style lang="scss">
 	section {
-		@apply grid gap-4 py-4;
+		@apply grid gap-4 p-4;
 		grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
 	}
 </style>

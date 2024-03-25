@@ -13,16 +13,14 @@
 	<link rel="shortcut icon" href="/logo.svg" type="image/x-icon" />
 </svelte:head>
 
-<main>
-	<slot />
-</main>
+<slot />
 
 <style lang="scss">
-	* {
+	:global(*) {
 		font-family: 'Inter';
 	}
 
-	main {
-		@apply h-svh bg-slate-50;
+	:global(main) {
+		@apply bg-slate-50;
 	}
 </style>

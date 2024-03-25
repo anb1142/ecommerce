@@ -1,28 +1,34 @@
 <script lang="ts">
+	export let id: number;
 	export let src: string;
 	export let alt: string;
 	export let title: string;
 	export let subtitle: string;
 </script>
 
-<article>
-	<img {src} {alt} />
+<a href={`/shop/${id}`} style:--card="card-{id}">
+	<img {src} {alt} style:--image="image-{id}" />
 	<div>
 		<h4>{title}</h4>
 		<p>{subtitle}</p>
 	</div>
-</article>
+</a>
 
 <style lang="scss">
-	article {
-		@apply rounded-lg border bg-card text-card-foreground shadow-md;
-		@apply flex flex-col gap-4 p-4;
+	a {
+		@apply rounded-lg border bg-white text-card-foreground shadow-md;
+		@apply flex cursor-pointer flex-col gap-4 p-4;
+		view-transition-name: var(--card);
+		animation-duration: 4s;
+
 		> div {
 			@apply flex;
 		}
+
 		> img {
 			@apply w-full rounded-lg;
 			@apply aspect-square object-cover;
+			view-transition-name: var(--image);
 		}
 		> div {
 			@apply flex flex-col gap-1;
