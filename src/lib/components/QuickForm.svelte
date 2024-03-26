@@ -4,9 +4,10 @@
 	import FormField from './ui/FormField.svelte';
 
 	export let fields: IFields;
+	export let action = 'create';
 </script>
 
-<SubmitForm action="?/create" btn="Create">
+<SubmitForm action="?/{action}" btn="Create">
 	{#each fields as field}
 		<FormField {...field} />
 	{/each}

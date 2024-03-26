@@ -29,14 +29,14 @@ const removeCols = (fields: IFields, cols: string[]) => {
 };
 
 export const productFields = [
-	{ name: 'name' },
-	{ name: 'price', type: 'text' },
+	{ name: 'name', label: 'Product Name' },
+	{ name: 'price', type: 'number' },
 	{ name: 'description', type: 'area' },
 	{ name: 'visible', type: 'boolean' }
 ] as const;
 
 export const categoryFields = [
-	{ name: 'name' }
+	{ name: 'name', label: 'Category Name' }
 	// { name: 'parent_category_id', type: 'options', label: 'Parent Category', required: false },
 ] as const;
 
