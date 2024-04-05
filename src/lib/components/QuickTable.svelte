@@ -10,16 +10,16 @@
 
 	export let ths: IFields = [];
 	export let rows: any = [];
+	export let perPage = 15;
+	export let rowCount = 0;
+
 	export let table: string | undefined = undefined;
-
-	export let orderBy = $page.url.searchParams.get('orderBy') || 'id';
+	let orderBy = $page.url.searchParams.get('orderBy') || 'id';
 	let order = ($page.url.searchParams.get('order') as ITableOrder) || null || 'asc';
-
-	let perPage = 15;
-	let rowCount = 0;
 	let currentPage = Number($page.url.searchParams.get('offset')) / perPage || 1;
 
 	const sort = async (column: string) => {
+		if (!table) return;
 		order = orderBy === column && order === 'asc' ? 'desc' : 'asc';
 		if (column !== orderBy) orderBy = column;
 		const data = {
@@ -49,16 +49,19 @@
 		<thead>
 			<tr>
 				{#each ths as th}
+					<!-- TODO onclick should be on div, div shouldn't exist when table is undefined -->
 					<th on:click={() => sort(th.name)}>
-						<div>
+						<div class:sort={table}>
 							{th.label}
-							<span class="sort" class:orderBy={orderBy === th.name}>
-								{#if (orderBy === th.name && order === 'asc') || orderBy !== th.name}
-									<ArrowUpNarrowWide class="w-4" />
-								{:else}
-									<ArrowDownNarrowWide class="w-4" />
-								{/if}
-							</span>
+							{#if table}
+								<span class:orderBy={orderBy === th.name}>
+									{#if (orderBy === th.name && order === 'asc') || orderBy !== th.name}
+										<ArrowUpNarrowWide class="w-4" />
+									{:else}
+										<ArrowDownNarrowWide class="w-4" />
+									{/if}
+								</span>
+							{/if}
 						</div>
 					</th>
 				{/each}
@@ -74,7 +77,9 @@
 			{/each}
 		</tbody>
 	</table>
-	<Pagination on:jump={fetchTableData} bind:currentPage {perPage} {rowCount} />
+	{#if rowCount > perPage}
+		<Pagination on:jump={fetchTableData} bind:currentPage bind:perPage bind:rowCount />
+	{/if}
 </section>
 
 <style lang="scss">
@@ -84,38 +89,53 @@
 
 	table {
 		@apply w-full overflow-hidden;
-		tbody > tr:last-child {
-			@apply border-0;
-		}
 		tr {
-			@apply border-b transition-colors;
+			@apply border-b;
+		}
+		thead > tr {
 			&:hover {
-				@apply bg-muted/50;
+				@apply bg-white;
 			}
-			th,
-			td {
-				@apply select-none border-0 p-2 px-4 text-left;
-				transition: transform 100ms ease-out;
-				&:hover {
-					transform: scale(1.01);
-				}
-			}
-
 			th {
+				@apply px-2 py-1;
 				> div {
+					@apply select-none rounded-sm px-2 py-1;
+					&.sort {
+						@apply cursor-pointer transition-colors;
+						&:hover {
+							@apply bg-muted;
+						}
+					}
 					@apply flex gap-4;
+
 					> span {
 						@apply opacity-0 transition-opacity;
 						&.orderBy {
-							opacity: 0.6 !important;
+							@apply opacity-70;
 						}
 					}
 				}
-				&:hover {
-					@apply cursor-pointer;
-					> div > span {
-						@apply opacity-40;
+				&:hover > div > span {
+					@apply opacity-40;
+					&.orderBy {
+						@apply opacity-80;
 					}
+				}
+			}
+		}
+		tbody > tr {
+			@apply transition-colors;
+			&:hover {
+				@apply bg-muted/50;
+			}
+			&:last-child {
+				@apply border-0;
+			}
+			td {
+				@apply p-2 px-4 transition-transform;
+
+				&:hover {
+					transform: scale(1.01);
 				}
 			}
 		}
