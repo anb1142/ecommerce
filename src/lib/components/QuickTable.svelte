@@ -1,37 +1,46 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { IFields } from '@/schemas';
+	import { setSearchParams } from '@/utils/setSearchParams';
 	import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import Pagination from './ui/Pagination.svelte';
+	import fetchJSON from '@/utils/fetchJSON';
+	type ITableOrder = 'asc' | 'desc';
 
 	export let ths: IFields = [];
 	export let rows: any = [];
 	export let table: string | undefined = undefined;
 
-	let order = $page.url.searchParams.get('order') || 'asc';
-	let orderBy = $page.url.searchParams.get('orderBy') || 'id';
+	export let orderBy = $page.url.searchParams.get('orderBy') || 'id';
+	let order = ($page.url.searchParams.get('order') as ITableOrder) || null || 'asc';
+
+	let perPage = 15;
+	let rowCount = 0;
+	let currentPage = Number($page.url.searchParams.get('offset')) / perPage || 1;
 
 	const sort = async (column: string) => {
-		const params = $page.url.searchParams;
 		order = orderBy === column && order === 'asc' ? 'desc' : 'asc';
 		if (column !== orderBy) orderBy = column;
+		const data = {
+			orderBy,
+			order: order === 'asc' ? undefined : order,
+			offset: undefined,
+			limit: perPage
+		};
+		currentPage = 1;
 
-		params.set('orderBy', orderBy);
-		params.set('order', order);
-
-		goto(`?${params.toString()}`);
-		fetchTableData();
+		setSearchParams(data);
+		await fetchTableData();
 	};
 
 	const fetchTableData = async () => {
-		const res = await fetch(`/admin/api/${table}${$page.url.search}`);
-		const data = await res.json();
-		console.log(`/admin/api/${table}${$page.url.search}`);
-		rows = data;
+		const data = await fetchJSON(`/admin/api/${table}${$page.url.search}`);
+		rows = data.rows;
+		rowCount = data.rowCount;
 	};
-	onMount(() => {
-		if (table) fetchTableData();
+	onMount(async () => {
+		if (table) await fetchTableData();
 	});
 </script>
 
@@ -64,8 +73,8 @@
 				</tr>
 			{/each}
 		</tbody>
-		<!-- <tfoot> <Pagination /> </tfoot> -->
 	</table>
+	<Pagination on:jump={fetchTableData} bind:currentPage {perPage} {rowCount} />
 </section>
 
 <style lang="scss">
@@ -76,10 +85,10 @@
 	table {
 		@apply w-full overflow-hidden;
 		tbody > tr:last-child {
-			border: none;
+			@apply border-0;
 		}
 		tr {
-			@apply border-b  transition-colors;
+			@apply border-b transition-colors;
 			&:hover {
 				@apply bg-muted/50;
 			}
@@ -94,7 +103,7 @@
 
 			th {
 				> div {
-					@apply flex  gap-4;
+					@apply flex gap-4;
 					> span {
 						@apply opacity-0 transition-opacity;
 						&.orderBy {
