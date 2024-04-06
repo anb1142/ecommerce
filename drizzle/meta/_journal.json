@@ -15,6 +15,13 @@
       "when": 1710923302215,
       "tag": "0001_ordinary_marvex",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712395062982,
+      "tag": "0002_crazy_living_mummy",
+      "breakpoints": true
     }
   ]
 }

@@ -30,6 +30,7 @@ export const product = createTable('product', {
 
 export const image = createTable('image', {
 	id: serial('id').primaryKey(),
+	alt: text('alt').notNull(),
 	url: text('url').notNull()
 });
 

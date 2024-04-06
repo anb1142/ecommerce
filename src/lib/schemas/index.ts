@@ -3,7 +3,7 @@ import toTitleCase from '@/utils/totitleCase';
 export type IField = {
 	name: string;
 	label?: string;
-	type?: string;
+	type?: 'string' | 'number' | 'boolean' | 'file' | 'area';
 	required?: boolean;
 	value?: string | number;
 	options?: string[];
@@ -40,7 +40,10 @@ export const categoryFields = [
 	// { name: 'parent_category_id', type: 'options', label: 'Parent Category', required: false },
 ] as const;
 
-export const imageFields = [{ name: 'caption' }, { name: 'url', label: 'Link' }] as const;
+export const imageFields = [
+	{ name: 'alt', label: 'Caption' },
+	{ name: 'image', type: 'file' }
+] as const;
 
 export const categoryCols = fieldsToCols(categoryFields);
 export const productCols = removeCols(fieldsToCols(productFields), ['description']);
