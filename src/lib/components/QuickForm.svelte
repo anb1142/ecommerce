@@ -2,12 +2,15 @@
 	import type { IFields } from '@/schemas';
 	import SubmitForm from './SubmitForm.svelte';
 	import FormField from './ui/FormField.svelte';
+	import toTitleCase from '@/utils/totitleCase';
 
 	export let fields: IFields;
 	export let action = 'create';
+	export let btn = toTitleCase(action);
+	let inclFile = fields.some((field) => field.type === 'file');
 </script>
 
-<SubmitForm action="?/{action}" btn="Create">
+<SubmitForm {inclFile} {btn} action="?/{action}">
 	{#each fields as field}
 		<FormField {...field} />
 	{/each}
