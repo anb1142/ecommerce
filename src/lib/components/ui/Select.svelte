@@ -1,9 +1,7 @@
 <script lang="ts">
 	import * as Select from '@/components/ui/select/index.ts';
-	type optType = {
-		value: string;
-		label: string;
-	};
+	import type { optType } from '@/schemas';
+
 	export let opts: optType[];
 	export let placeholder = 'Choose an option';
 	export let name: string;

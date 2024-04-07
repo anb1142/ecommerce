@@ -1,14 +1,10 @@
 <script lang="ts">
+	import Select from '@/components/ui/Select.svelte';
 	import { Input } from '@/components/ui/input';
 	import { Label } from '@/components/ui/label';
 	import { Textarea } from '@/components/ui/textarea';
-	import Select from '@/components/ui/Select.svelte';
+	import type { optType } from '@/schemas';
 	import toTitleCase from '@/utils/totitleCase';
-
-	type optType = {
-		value: string;
-		label: string;
-	};
 
 	type IValue = string | number | File;
 

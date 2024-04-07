@@ -1,12 +1,15 @@
 import toTitleCase from '@/utils/totitleCase';
-
+export type optType = {
+	value: string | number;
+	label: string;
+};
 export type IField = {
 	name: string;
 	label?: string;
 	type?: 'string' | 'number' | 'boolean' | 'file' | 'area';
 	required?: boolean;
 	value?: string | number;
-	options?: string[];
+	opts?: optType[];
 	valType?: 'number' | 'string';
 };
 
