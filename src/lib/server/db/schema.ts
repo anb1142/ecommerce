@@ -46,3 +46,5 @@ export const tables = {
 	image,
 	product_image
 };
+
+export type ITables = keyof typeof tables;
