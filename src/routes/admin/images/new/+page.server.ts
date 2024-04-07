@@ -8,8 +8,8 @@ import { type Actions, redirect } from '@sveltejs/kit';
 export const actions = {
 	create: async ({ request }) => {
 		const formData = await request.formData();
-		const { image, alt } = extractFormValues(imageFields, formData);
-		const res = await uploadMedia(image, alt);
+		const { url: imageFile, alt } = extractFormValues(imageFields, formData);
+		const res = await uploadMedia(imageFile, alt);
 		if (res.success) {
 			const { secure_url: url } = res.result;
 			await db.insert(image).values({ alt, url });

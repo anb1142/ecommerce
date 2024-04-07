@@ -45,9 +45,22 @@ export const categoryFields = [
 
 export const imageFields = [
 	{ name: 'alt', label: 'Caption' },
-	{ name: 'image', type: 'file' }
+	{ name: 'url', label: 'Image', type: 'file' }
 ] as const;
 
 export const categoryCols = fieldsToCols(categoryFields);
 export const productCols = removeCols(fieldsToCols(productFields), ['description']);
 export const imageCols = fieldsToCols(imageFields);
+
+export const fields = {
+	category: categoryFields,
+	product: productFields,
+	image: imageFields,
+	product_image: imageFields
+};
+export const cols = {
+	category: categoryCols,
+	product: productCols,
+	image: imageCols,
+	product_image: imageCols
+};
