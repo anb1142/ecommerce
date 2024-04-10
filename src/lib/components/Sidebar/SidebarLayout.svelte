@@ -7,7 +7,7 @@
 	import linkList from './links.ts';
 	const links = { ...linkList };
 
-	$: route = $page.route.id || '/';
+	$: route = $page.url.pathname || '/';
 	$: pageName = route.replace('/admin/', '').split('/').reverse().join(' ') || '';
 	$: title = toTitleCase(pageName);
 </script>
@@ -28,7 +28,6 @@
 </section>
 
 <style lang="scss">
-
 	section {
 		@apply flex min-h-svh;
 	}
