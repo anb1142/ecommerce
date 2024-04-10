@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import toTitleCase from '@/utils/totitleCase.ts';
-	import Sidebar from './Sidebar.svelte';
-	import Meta from '../Meta.svelte';
 	import { Button } from '@/components/ui/button';
-	import linkList from './links.ts';
-	const links = { ...linkList };
+	import toTitleCase from '@/utils/totitleCase.ts';
+	import Meta from '../Meta.svelte';
+	import BreadCrumbs from './BreadCrumbs.svelte';
+	import Sidebar from './Sidebar.svelte';
+	import links from './links.ts';
 
 	$: route = $page.url.pathname || '/';
 	$: pageName = route.replace('/admin/', '').split('/').reverse().join(' ') || '';
@@ -16,12 +16,15 @@
 <section>
 	<Sidebar />
 	<main>
-		<div>
-			<h1>{title}</h1>
-			{#if links[pageName]?.new}
-				<Button href={`${route}/new`}>New</Button>
-			{/if}
-		</div>
+		<header>
+			<BreadCrumbs />
+			<div class="title">
+				<h1>{title}</h1>
+				{#if links[pageName]?.new}
+					<Button href={`${route}/new`}>New</Button>
+				{/if}
+			</div>
+		</header>
 
 		<slot />
 	</main>
@@ -32,11 +35,11 @@
 		@apply flex min-h-svh;
 	}
 	main {
-		@apply bg-slate-50 p-4 px-8;
-		@apply min-h-svh;
-		width: 80%;
-		div {
-			@apply mb-8 flex items-center gap-4;
+		@apply min-h-svh w-4/5 bg-slate-50 p-4 px-8;
+		header {
+			> .title {
+				@apply mb-8 flex items-center gap-4;
+			}
 		}
 	}
 </style>
