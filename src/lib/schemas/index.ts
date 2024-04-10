@@ -5,8 +5,9 @@ export type optType = {
 	label: string;
 };
 
-type ICol<TTableCols> = { name: keyof TTableCols; label: string };
-type ICols<TTableCols> = Array<ICol<TTableCols>>;
+type ICol<TTableColKeys> = { name: TTableColKeys; label: string };
+type ICols<TTableCols> = Array<ICol<keyof TTableCols>>;
+
 type ITableCols<TTableName extends ITables> = ICols<ISelectTableByName<TTableName>>;
 
 export type IField = {
@@ -19,23 +20,29 @@ export type IField = {
 	valType?: 'number' | 'string';
 };
 
+type ITableField<TTableColKeys> = IField & { name: TTableColKeys };
+type ITableFieldList<TTableCols> = readonly ITableField<keyof TTableCols>[];
+type ITableFields<TTableName extends ITables> = ITableFieldList<
+	ISelectTableByName<TTableName>
+>;
+
 export type IFields = readonly IField[];
 
 export const productFields = [
 	{ name: 'name', label: 'Product Name' },
 	{ name: 'price', type: 'number' },
 	{ name: 'description', type: 'area' }
-] as const;
+] as const satisfies ITableFields<'product'>;
 
 export const categoryFields = [
 	{ name: 'name', label: 'Category Name' }
 	// { name: 'parent_category_id', type: 'options', label: 'Parent Category', required: false },
-] as const;
+] as const satisfies ITableFields<'category'>;
 
 export const imageFields = [
 	{ name: 'alt', label: 'Caption' },
 	{ name: 'url', label: 'Image', type: 'file' }
-] as const;
+] as const satisfies ITableFields<'image'>;
 
 export const productCols = [
 	{ name: 'id', label: 'Product ID' },
@@ -52,7 +59,6 @@ export const categoryCols = [
 
 export const imageCols = [
 	{ name: 'id', label: 'Image ID' },
-
 	{ name: 'alt', label: 'Caption' },
 	{ name: 'url', label: 'Image' }
 ] as const satisfies ITableCols<'image'>;
