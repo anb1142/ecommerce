@@ -1,34 +1,35 @@
-import { cols, fields } from '@/schemas';
+import { cols } from '@/schemas';
 import { db } from '@/server/db';
 import type { ITables } from '@/server/db/schema.js';
-import selectTable, { type ISelectedTable } from '@/utils/selectTable';
+import selectTable, { type ISelectTableByName } from '@/utils/selectTable';
 import tableIsValid from '@/utils/tableIsValid.js';
 import { asc, count, desc } from 'drizzle-orm';
 
 const selectTableColumns = <
 	TTableName extends ITables,
-	TTable extends ISelectedTable<TTableName>
+	TTable extends ISelectTableByName<TTableName>
 >(
 	tableName: TTableName,
 	table: TTable
 ) => {
 	type ISelect = typeof table.$inferSelect;
 	type IColumn<T extends keyof ISelect> = TTable[T];
+	const tableCols = cols[tableName];
 	const columns = {} as Record<keyof TTable, IColumn<keyof ISelect>>;
-	const tableFields = fields[tableName];
 	if (table.id) columns.id = table.id;
-	for (const col of tableFields) {
+	for (const col of tableCols) {
 		const name = col.name as keyof ISelect;
 		columns[name] = table[name];
 	}
+
 	return columns;
 };
 
 export const load = async ({ params, url }) => {
 	const tableName = tableIsValid(params);
 	const table = selectTable(tableName);
-	const columns = selectTableColumns(tableName, table);
 
+	const columns = selectTableColumns(tableName, table);
 	const orderBy = (url.searchParams.get('orderBy') ||
 		'id') as keyof typeof table.$inferSelect;
 	const order = (url.searchParams.get('order') || 'asc') as 'asc' | 'desc';
@@ -39,7 +40,6 @@ export const load = async ({ params, url }) => {
 		const res = await db.select({ count: count() }).from(table);
 		return res[0].count;
 	};
-
 	const getRows = async () =>
 		await db
 			.select(columns)

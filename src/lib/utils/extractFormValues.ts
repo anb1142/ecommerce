@@ -1,17 +1,19 @@
 import type { IFields } from '@/schemas';
 
-const extractFormValues: <const TFields extends IFields>(
-	fields: TFields,
-	formData: FormData
-) => {
-	[Key in TFields[number]['name']]: Extract<TFields[number], { name: Key }>['type'] extends 'file'
+type IExtractedFormValues<TFields extends IFields> = {
+	[Key in TFields[number]['name']]: TFields[number]['type'] extends 'file'
 		? File
-		: Extract<TFields[number], { name: Key }>['type'] extends 'boolean'
+		: TFields[number]['type'] extends 'boolean'
 			? boolean
-			: Extract<TFields[number], { name: Key }>['valType'] extends 'number'
+			: TFields[number]['valType'] extends 'number'
 				? number
 				: string;
-} = (fields, formData: FormData) => {
+};
+
+const extractFormValues = <const TFields extends IFields>(
+	fields: TFields,
+	formData: FormData
+): IExtractedFormValues<TFields> => {
 	const data: any = {};
 	for (const field of fields) {
 		if (field.type === 'file') {
@@ -25,5 +27,4 @@ const extractFormValues: <const TFields extends IFields>(
 	}
 	return data;
 };
-
 export { extractFormValues };
