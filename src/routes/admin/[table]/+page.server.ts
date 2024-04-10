@@ -1,8 +1,8 @@
 import { cols, fields } from '@/schemas';
 import { db } from '@/server/db';
-import { type ITables, tables } from '@/server/db/schema';
+import type { ITables } from '@/server/db/schema.js';
 import selectTable, { type ISelectedTable } from '@/utils/selectTable';
-import { redirect } from '@sveltejs/kit';
+import tableIsValid from '@/utils/tableIsValid.js';
 import { asc, count, desc } from 'drizzle-orm';
 
 const selectTableColumns = <
@@ -25,9 +25,7 @@ const selectTableColumns = <
 };
 
 export const load = async ({ params, url }) => {
-	const tableName = params.slug as ITables;
-	if (!Object.keys(tables).includes(tableName)) redirect(303, '/admin/');
-
+	const tableName = tableIsValid(params);
 	const table = selectTable(tableName);
 	const columns = selectTableColumns(tableName, table);
 

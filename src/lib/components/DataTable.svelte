@@ -15,7 +15,7 @@
 
 	export let sortable = false;
 
-	let slug = $page.params.slug;
+	let table = $page.params.table;
 
 	let orderBy = $page.url.searchParams.get('orderBy') || 'id';
 	let order = $page.url.searchParams.get('order') as ITableOrder;
@@ -36,10 +36,10 @@
 		order = ($page.url.searchParams.get('order') || null) as ITableOrder;
 	});
 	afterNavigate(() => {
-		if (slug !== $page.params.slug) {
+		if (table !== $page.params.table) {
 			orderBy = 'id';
 			order = null;
-			slug = $page.params.slug;
+			table = $page.params.table;
 		}
 	});
 </script>
@@ -49,7 +49,7 @@
 		<thead>
 			<tr>
 				{#each ths as th (th.name)}
-					<!-- TODO remove onclick; sort icons change up revisitin current link;fix pages; -->
+					<!-- TODO remove onclick; sort doesn't work after immediate return of another page;fix pages; -->
 					<th on:click={() => getSortLink(th.name)}>
 						<a class:sort={sortable} href={getSortLink(th.name)}>
 							{th.label}
