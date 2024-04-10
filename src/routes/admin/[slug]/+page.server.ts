@@ -3,7 +3,7 @@ import { db } from '@/server/db';
 import { type ITables, tables } from '@/server/db/schema';
 import selectTable, { type ISelectedTable } from '@/utils/selectTable';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { asc, count, desc } from 'drizzle-orm';
 
 const selectTableColumns = <
 	TTableName extends ITables,
@@ -24,15 +24,33 @@ const selectTableColumns = <
 	return columns;
 };
 
-export const load = (async ({ params }) => {
+export const load = async ({ params, url }) => {
 	const tableName = params.slug as ITables;
 	if (!Object.keys(tables).includes(tableName)) redirect(303, '/admin/');
 
 	const table = selectTable(tableName);
 	const columns = selectTableColumns(tableName, table);
 
-	const rows = await db.select(columns).from(table);
+	const orderBy = (url.searchParams.get('orderBy') ||
+		'id') as keyof typeof table.$inferSelect;
+	const order = (url.searchParams.get('order') || 'asc') as 'asc' | 'desc';
+	const limit = (url.searchParams.get('limit') || 15) as number;
+	const offset = (url.searchParams.get('offset') || 0) as number;
+
+	const getRowCount = async () => {
+		const res = await db.select({ count: count() }).from(table);
+		return res[0].count;
+	};
+
+	const getRows = async () =>
+		await db
+			.select(columns)
+			.from(table)
+			.limit(limit)
+			.offset(offset)
+			.orderBy(order === 'desc' ? desc(table[orderBy]) : asc(table[orderBy]));
+
 	const ths = cols[tableName];
 
-	return { rows, ths };
-}) satisfies PageServerLoad;
+	return { rows: await getRows(), rowCount: await getRowCount(), ths, now: Date.now() };
+};

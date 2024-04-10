@@ -1,7 +1,9 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 
-export const setSearchParams = (obj: Record<string, string | number | undefined>) => {
+type IParamsObj = Record<string, string | number | undefined>;
+
+export const objToParams = (obj: IParamsObj) => {
 	let params = '';
 	const unsubscribe = page.subscribe((page) => {
 		const searchParams = page.url.searchParams;
@@ -11,8 +13,13 @@ export const setSearchParams = (obj: Record<string, string | number | undefined>
 		}
 		params = `?${searchParams.toString()}`;
 	});
-
 	unsubscribe();
+
+	return params;
+};
+
+export const setSearchParams = (obj: IParamsObj) => {
+	const params = objToParams(obj);
 	goto(params);
 	return params;
 };

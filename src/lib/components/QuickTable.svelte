@@ -1,46 +1,46 @@
 <script lang="ts">
+	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { IFields } from '@/schemas';
-	import { setSearchParams } from '@/utils/setSearchParams';
+	import { objToParams } from '@/utils/setSearchParams';
 	import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 	import Pagination from './ui/Pagination.svelte';
-	import fetchJSON from '@/utils/fetchJSON';
-	type ITableOrder = 'asc' | 'desc';
+
+	type ITableOrder = null | 'desc';
 
 	export let ths: IFields = [];
 	export let rows: any = [];
 	export let perPage = 15;
 	export let rowCount = 0;
 
-	export let table: string | undefined = undefined;
-	let orderBy = $page.url.searchParams.get('orderBy') || 'id';
-	let order = ($page.url.searchParams.get('order') as ITableOrder) || null || 'asc';
-	let currentPage = Number($page.url.searchParams.get('offset')) / perPage || 1;
+	export let sortable = false;
 
-	const sort = async (column: string) => {
-		if (!table) return;
-		order = orderBy === column && order === 'asc' ? 'desc' : 'asc';
-		if (column !== orderBy) orderBy = column;
+	let slug = $page.params.slug;
+
+	let orderBy = $page.url.searchParams.get('orderBy') || 'id';
+	let order = $page.url.searchParams.get('order') as ITableOrder;
+	let currentPage = Number($page.url.searchParams.get('currentPage')) || 1;
+
+	const getSortLink = (column: string) => {
+		let newOrder = orderBy === column && order === null ? 'desc' : undefined;
 		const data = {
-			orderBy,
-			order: order === 'asc' ? undefined : order,
-			offset: undefined,
+			orderBy: column,
+			order: newOrder,
+			currentPage: undefined,
 			limit: perPage
 		};
-		currentPage = 1;
-
-		setSearchParams(data);
-		await fetchTableData();
+		return objToParams(data);
 	};
-
-	const fetchTableData = async () => {
-		const data = await fetchJSON(`/admin/api/${table}${$page.url.search}`);
-		rows = data.rows;
-		rowCount = data.rowCount;
-	};
-	onMount(async () => {
-		if (table) await fetchTableData();
+	onNavigate(() => {
+		orderBy = $page.url.searchParams.get('orderBy') || 'id';
+		order = ($page.url.searchParams.get('order') || null) as ITableOrder;
+	});
+	afterNavigate(() => {
+		if (slug !== $page.params.slug) {
+			orderBy = 'id';
+			order = null;
+			slug = $page.params.slug;
+		}
 	});
 </script>
 
@@ -48,21 +48,21 @@
 	<table>
 		<thead>
 			<tr>
-				{#each ths as th}
-					<!-- TODO onclick should be on div, div shouldn't exist when table is undefined -->
-					<th on:click={() => sort(th.name)}>
-						<div class:sort={table}>
+				{#each ths as th (th.name)}
+					<!-- TODO remove onclick; sort icons change up revisitin current link;fix pages; -->
+					<th on:click={() => getSortLink(th.name)}>
+						<a class:sort={sortable} href={getSortLink(th.name)}>
 							{th.label}
-							{#if table}
+							{#if sortable}
 								<span class:orderBy={orderBy === th.name}>
-									{#if (orderBy === th.name && order === 'asc') || orderBy !== th.name}
+									{#if (orderBy === th.name && !order) || orderBy !== th.name}
 										<ArrowUpNarrowWide class="w-4" />
 									{:else}
 										<ArrowDownNarrowWide class="w-4" />
 									{/if}
 								</span>
 							{/if}
-						</div>
+						</a>
 					</th>
 				{/each}
 			</tr>
@@ -78,7 +78,7 @@
 		</tbody>
 	</table>
 	{#if rowCount > perPage}
-		<Pagination on:jump={fetchTableData} bind:currentPage bind:perPage bind:rowCount />
+		<Pagination on:jump bind:currentPage bind:perPage bind:rowCount />
 	{/if}
 </section>
 
@@ -98,7 +98,7 @@
 			}
 			th {
 				@apply px-2 py-1;
-				> div {
+				> a {
 					@apply select-none rounded-sm px-2 py-1;
 					&.sort {
 						@apply cursor-pointer transition-colors;
@@ -115,7 +115,7 @@
 						}
 					}
 				}
-				&:hover > div > span {
+				&:hover > a > span {
 					@apply opacity-40;
 					&.orderBy {
 						@apply opacity-80;

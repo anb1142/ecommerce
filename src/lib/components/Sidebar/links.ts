@@ -10,15 +10,15 @@ const links: ILinks = {
 	dashboard: {
 		text: 'Dashboard'
 	},
-	categories: {
+	category: {
 		text: 'Categories',
 		new: true
 	},
-	images: {
+	image: {
 		text: 'Images',
 		new: true
 	},
-	products: {
+	product: {
 		text: 'Products',
 		new: true
 	}

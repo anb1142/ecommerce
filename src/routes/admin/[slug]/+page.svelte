@@ -1,9 +1,6 @@
 <script lang="ts">
 	import QuickTable from '@/components/QuickTable.svelte';
-	import type { PageData } from './$types';
-
-	export let data: PageData;
-	const { rows, ths } = data;
+	export let data;
 </script>
 
-<QuickTable {rows} {ths} />
+<QuickTable rowCount={data.rowCount} rows={data.rows} ths={data.ths} sortable={true} />
