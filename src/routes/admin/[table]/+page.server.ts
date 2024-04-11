@@ -26,29 +26,46 @@ const selectTableColumns = <
 };
 
 export const load = async ({ params, url }) => {
+	const perPage = 15;
 	const tableName = tableIsValid(params);
 	const table = selectTable(tableName);
-
 	const columns = selectTableColumns(tableName, table);
-	const orderBy = (url.searchParams.get('orderBy') ||
-		'id') as keyof typeof table.$inferSelect;
-	const order = (url.searchParams.get('order') || 'asc') as 'asc' | 'desc';
-	const limit = (url.searchParams.get('limit') || 15) as number;
-	const offset = (url.searchParams.get('offset') || 0) as number;
+	const getParams = () => {
+		type ITableOrder = null | 'desc';
+		const page = (url.searchParams.get('page') || 1) as number;
+		const limit = (url.searchParams.get('perPage') || perPage) as number;
+		const offset = (page - 1) * limit;
+		const orderBy = (url.searchParams.get('orderBy') ||
+			'id') as keyof typeof table.$inferSelect;
+		const order = url.searchParams.get('order') as ITableOrder;
+
+		return { orderBy, order, limit, offset };
+	};
+
+	const tableParams = getParams();
 
 	const getRowCount = async () => {
 		const res = await db.select({ count: count() }).from(table);
 		return res[0].count;
 	};
-	const getRows = async () =>
-		await db
+	const getRows = async () => {
+		const orderBy = table[tableParams.orderBy];
+		const query = db
 			.select(columns)
 			.from(table)
-			.limit(limit)
-			.offset(offset)
-			.orderBy(order === 'desc' ? desc(table[orderBy]) : asc(table[orderBy]));
+			.limit(tableParams.limit)
+			.offset(tableParams.offset)
+			.orderBy(tableParams.order === 'desc' ? desc(orderBy) : asc(orderBy));
+		return await query;
+	};
 
 	const ths = cols[tableName];
 
-	return { rows: await getRows(), rowCount: await getRowCount(), ths, now: Date.now() };
+	return {
+		tableParams: getParams(),
+		rows: await getRows(),
+		rowCount: await getRowCount(),
+		ths,
+		perPage
+	};
 };
