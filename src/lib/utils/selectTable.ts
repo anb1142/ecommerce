@@ -1,8 +1,8 @@
-import { type ITables, tables } from '@/server/db/schema';
+import { type ITableName, tables } from '@/server/db/schema';
 
-export type ISelectTableByName<TableName extends ITables> = (typeof tables)[TableName];
+export type ISelectTableByName<TableName extends ITableName> = (typeof tables)[TableName];
 
-const selectTable = <TTableName extends ITables>(tableName: TTableName) => {
+const selectTable = <TTableName extends ITableName>(tableName: TTableName) => {
 	const table = tables[tableName] as ISelectTableByName<TTableName>;
 	return table;
 };

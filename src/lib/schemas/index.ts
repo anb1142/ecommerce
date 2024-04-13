@@ -1,4 +1,4 @@
-import type { ITables } from '@/server/db/schema';
+import type { ITableName } from '@/server/db/schema';
 import type { ISelectTableByName } from '@/utils/selectTable';
 export type optType = {
 	value: string | number;
@@ -8,7 +8,7 @@ export type optType = {
 type ICol<TTableColKeys> = { name: TTableColKeys; label: string };
 type ICols<TTableCols> = Array<ICol<keyof TTableCols>>;
 
-type ITableCols<TTableName extends ITables> = ICols<ISelectTableByName<TTableName>>;
+type ITableCols<TTableName extends ITableName> = ICols<ISelectTableByName<TTableName>>;
 
 export type IField = {
 	name: string;
@@ -22,7 +22,7 @@ export type IField = {
 
 type ITableField<TTableColKeys> = IField & { name: TTableColKeys };
 type ITableFieldList<TTableCols> = readonly ITableField<keyof TTableCols>[];
-type ITableFields<TTableName extends ITables> = ITableFieldList<
+type ITableFields<TTableName extends ITableName> = ITableFieldList<
 	ISelectTableByName<TTableName>
 >;
 
