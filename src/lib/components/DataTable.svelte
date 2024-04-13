@@ -2,25 +2,23 @@
 	import type { IFields } from '@/schemas';
 	import { objToParams } from '@/utils/setSearchParams';
 	import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-svelte';
+	import Pagination from './Pagination/Pagination.svelte';
+	import {
+		getDefaultTableParams,
+		type ITableFilterParams
+	} from '@/utils/getTableFilterParams';
 
 	export let ths: IFields = [];
 	export let rows: any = [];
-	export let perPage: number;
 	export let totalRows: number;
-	export let tableParams: {
-		orderBy: 'id';
-		order: null | 'desc';
-		limit: number;
-	};
-
+	export let tableParams: ITableFilterParams;
 	let sortable = true;
 
-	const getSortLink = (col: string) => {
-		let order = tableParams.orderBy === col && !tableParams.order ? 'desc' : undefined;
-		const data = {
-			orderBy: col,
-			order
-		};
+	const getSortLink = (orderBy: string) => {
+		let order =
+			tableParams.orderBy === orderBy && !tableParams.order ? 'desc' : undefined;
+
+		const data = { ...getDefaultTableParams(tableParams), orderBy, order, page: 1 };
 		return objToParams(data);
 	};
 </script>
@@ -57,9 +55,9 @@
 			{/each}
 		</tbody>
 	</table>
-	<!-- {#if rowCount > perPage}
-		<Pagination on:jump bind:currentPage bind:perPage bind:rowCount />
-	{/if} -->
+	{#if totalRows > tableParams.limit}
+		<Pagination bind:totalRows bind:tableParams />
+	{/if}
 </section>
 
 <style lang="scss">

@@ -1,12 +1,13 @@
 import { cols } from '@/schemas';
 import { db } from '@/server/db';
-import type { ITables } from '@/server/db/schema.js';
+import type { ITableName } from '@/server/db/schema.js';
+import { getTableFilterParams } from '@/utils/getTableFilterParams.js';
 import selectTable, { type ISelectTableByName } from '@/utils/selectTable';
 import tableIsValid from '@/utils/tableIsValid.js';
 import { asc, count, desc } from 'drizzle-orm';
 
 const selectTableColumns = <
-	TTableName extends ITables,
+	TTableName extends ITableName,
 	TTable extends ISelectTableByName<TTableName>
 >(
 	tableName: TTableName,
@@ -30,19 +31,8 @@ export const load = async ({ params, url }) => {
 	const tableName = tableIsValid(params);
 	const table = selectTable(tableName);
 	const columns = selectTableColumns(tableName, table);
-	const getParams = () => {
-		type ITableOrder = null | 'desc';
-		const page = (url.searchParams.get('page') || 1) as number;
-		const limit = (url.searchParams.get('perPage') || perPage) as number;
-		const offset = (page - 1) * limit;
-		const orderBy = (url.searchParams.get('orderBy') ||
-			'id') as keyof typeof table.$inferSelect;
-		const order = url.searchParams.get('order') as ITableOrder;
-
-		return { orderBy, order, limit, offset };
-	};
-
-	const tableParams = getParams();
+	const tableParams = getTableFilterParams(url, perPage, table);
+	const offset = (tableParams.page - 1) * tableParams.limit;
 
 	const getRowCount = async () => {
 		const res = await db.select({ count: count() }).from(table);
@@ -54,7 +44,7 @@ export const load = async ({ params, url }) => {
 			.select(columns)
 			.from(table)
 			.limit(tableParams.limit)
-			.offset(tableParams.offset)
+			.offset(offset)
 			.orderBy(tableParams.order === 'desc' ? desc(orderBy) : asc(orderBy));
 		return await query;
 	};
@@ -62,10 +52,9 @@ export const load = async ({ params, url }) => {
 	const ths = cols[tableName];
 
 	return {
-		tableParams: getParams(),
+		tableParams,
 		rows: await getRows(),
-		rowCount: await getRowCount(),
-		ths,
-		perPage
+		totalRows: await getRowCount(),
+		ths
 	};
 };
