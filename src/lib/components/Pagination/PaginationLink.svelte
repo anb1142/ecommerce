@@ -3,7 +3,7 @@
 		getDefaultTableParams,
 		type ITableFilterParams
 	} from '@/utils/getTableFilterParams';
-	import { objToParams } from '@/utils/setSearchParams';
+	import { objToParams } from '@/utils/objToParams';
 	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
 	export let label: 'Previous' | 'Next' | undefined = undefined;

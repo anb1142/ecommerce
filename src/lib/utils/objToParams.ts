@@ -1,25 +1,24 @@
-import { goto } from '$app/navigation';
+import * as qs from 'qs';
 import { page } from '$app/stores';
 
 type IParamsObj = Record<string, string | number | undefined>;
 
-export const objToParams = (obj: IParamsObj) => {
-	let params = '';
+const getCurrentParams = () => {
+	let obj = {};
 	const unsubscribe = page.subscribe((page) => {
 		const searchParams = page.url.searchParams;
 		for (const [key, value] of Object.entries(obj)) {
 			if (value === undefined || null) searchParams.delete(key);
 			else searchParams.set(key, String(value));
 		}
-		params = `?${searchParams.toString()}`;
+		obj = Object.fromEntries(searchParams);
 	});
 	unsubscribe();
-
-	return params;
+	return obj;
 };
 
-export const setSearchParams = (obj: IParamsObj) => {
-	const params = objToParams(obj);
-	goto(params);
-	return params;
+export const objToParams = (data: IParamsObj) => {
+	const current = getCurrentParams();
+	const newParams = qs.stringify({ ...current, ...data });
+	return `?${newParams}`;
 };
