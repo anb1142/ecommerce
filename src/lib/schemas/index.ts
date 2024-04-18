@@ -3,6 +3,7 @@ import type { ISelectTableByName } from '@/utils/selectTable';
 export type optType = {
 	value: string | number;
 	label: string;
+	selected?: boolean;
 };
 
 type ICol<TTableColKeys> = { name: TTableColKeys; label: string };

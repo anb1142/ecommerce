@@ -24,20 +24,19 @@
 			<span></span>
 		{/if}
 	</Label>
-	{#if type === 'area'}
-		<Textarea id={name} {name} />
+	{#if type === 'area' && typeof value === 'string'}
+		<Textarea id={name} {name} {value} />
 	{:else if type === 'boolean'}
 		<Select
 			id={name}
 			{name}
-			{label}
 			opts={[
 				{ value: 'true', label: 'Yes' },
 				{ value: 'false', label: 'No' }
 			]}
 		/>
 	{:else if opts}
-		<Select {label} id={name} {name} {opts} placeholder="Choose a Category" />
+		<Select id={name} {name} {opts} placeholder="Choose a Category" />
 	{:else}
 		<Input id={name} {type} {name} {...$$props} bind:value />
 	{/if}
