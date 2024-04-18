@@ -15,14 +15,16 @@ export type IField = {
 	label?: string;
 	type?: 'string' | 'number' | 'boolean' | 'file' | 'area';
 	required?: boolean;
+	editable?: boolean;
 	value?: string | number;
 	opts?: optType[];
 	valType?: 'number' | 'string';
+	accept?: string;
 };
 
 type ITableField<TTableColKeys> = IField & { name: TTableColKeys };
 type ITableFieldList<TTableCols> = readonly ITableField<keyof TTableCols>[];
-type ITableFields<TTableName extends ITableName> = ITableFieldList<
+export type ITableFields<TTableName extends ITableName> = ITableFieldList<
 	ISelectTableByName<TTableName>
 >;
 
@@ -41,7 +43,7 @@ export const categoryFields = [
 
 export const imageFields = [
 	{ name: 'alt', label: 'Caption' },
-	{ name: 'url', label: 'Image', type: 'file' }
+	{ name: 'url', label: 'Image', type: 'file', accept: 'image/*', editable: false }
 ] as const satisfies ITableFields<'image'>;
 
 export const productCols = [

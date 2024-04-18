@@ -1,7 +1,6 @@
 <script>
 	import QuickForm from '@/components/QuickForm.svelte';
-
-	export let data;
+	import { imageFields as fields } from '@/schemas';
 </script>
 
-<QuickForm fields={data.fields} />
+<QuickForm {fields} />

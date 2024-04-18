@@ -21,7 +21,7 @@
 			<div class="title">
 				<h1>{title}</h1>
 				{#if links[pageName]?.new}
-					<Button href={`${route}/new`}>New</Button>
+					<Button href={`${route}/create`}>New</Button>
 				{/if}
 			</div>
 		</header>

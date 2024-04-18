@@ -4,6 +4,7 @@
 	import Dialog from '@/components/Dialog/Dialog.svelte';
 
 	export let data;
+
 	const remove = () => {
 		const id = $page.url.searchParams.get('delete');
 		console.log(id);
