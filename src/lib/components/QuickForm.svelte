@@ -11,6 +11,7 @@
 </script>
 
 <SubmitForm {inclFile} {btn} action="?/{action}">
+	<slot />
 	{#each fields as field}
 		<FormField {...field} />
 	{/each}
