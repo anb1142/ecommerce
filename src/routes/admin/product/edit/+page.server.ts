@@ -1,9 +1,10 @@
 import { productFields, type IField } from '@/schemas';
 import { db } from '@/server/db';
-import { category, product } from '@/server/db/schema';
+import { category, image, product, product_image } from '@/server/db/schema';
 import { extractFormValues } from '@/utils/extractFormValues';
 import { goBack } from '@/utils/redirects.js';
 import { eq } from 'drizzle-orm';
+import type { N } from 'vitest/dist/reporters-P7C2ytIv.js';
 
 const getCategoriesForSelect = async () =>
 	await db.select({ value: category.id, label: category.name }).from(category);
@@ -32,13 +33,29 @@ const getFieldData = async (id: number) => {
 			.where(eq(product.id, id))
 	)[0];
 };
-export const load = async ({ url }) => {
-	const id = url.searchParams.get('id');
-	if (!id) goBack(url);
+const getImages = async () => {
+	const query = db.select({ id: image.id, alt: image.alt, url: image.url }).from(image);
+	return await query;
+};
+type IImage = {
+	id: number;
+	alt: string;
+	url: string;
+};
+const getProductImages = async (id: number, allImages: IImage[]) => {
+	const productImagesRes = await db
+		.select()
+		.from(product_image)
+		.where(eq(product_image.product_id, id));
+	return allImages.filter((image) =>
+		productImagesRes.some((productImage) => productImage.image_id === image.id)
+	);
+};
+
+const getValuedFields = async (id: number) => {
 	const fields = await getFields();
-	const fieldData = await getFieldData(Number(id));
-	console.log(fieldData);
-	const valuedFields = fields.map((field) => {
+	const fieldData = await getFieldData(id);
+	return fields.map((field) => {
 		const fieldName = field.name;
 		let newField;
 		if (field.name === 'category_id' && field.opts) {
@@ -51,17 +68,40 @@ export const load = async ({ url }) => {
 		}
 		return newField;
 	});
-
-	return { fields: valuedFields, id: id };
 };
 
+export const load = async ({ url }) => {
+	if (!url.searchParams.get('id')) goBack(url);
+	const id = Number(url.searchParams.get('id'));
+
+	const valuedFields = await getValuedFields(id);
+	const allImages = await getImages();
+	const productImages = await getProductImages(id, allImages);
+	const addedImageIds = productImages.map((image) => image.id);
+	return { fields: valuedFields, id, allImages, productImages, addedImageIds };
+};
+
+const setProductImages = async (product_id: number, imageIds: number[]) => {
+	const allImages = await getImages();
+	const productImages = await getProductImages(Number(product_id), allImages);
+
+	const values = imageIds
+		.filter((image_id) => !productImages.some((image) => image.id === image_id))
+		.map((image_id) => ({ product_id, image_id }));
+	if (values.length > 0) await db.insert(product_image).values(values);
+};
 export const actions = {
 	edit: async ({ request, url }) => {
 		const fields = await getFields();
 		const formData = await request.formData();
 		const data = extractFormValues(fields, formData);
 		const id = Number(formData.get('id') as string);
+		const addImgs = formData.get('addImgs') as string;
+		const imgIds = addImgs.split(',').map(Number);
+
+		await setProductImages(id, imgIds);
 		await db.update(product).set(data).where(eq(product.id, id));
+
 		goBack(url);
 	}
 };

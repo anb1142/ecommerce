@@ -8,6 +8,7 @@
 	import { enhance } from '$app/forms';
 
 	export let name: string;
+	export let w: string = '50vh';
 	export let confirm: Function | undefined = undefined;
 	export let phrase: string | undefined = undefined;
 	let opened = true;
@@ -44,11 +45,12 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<dialog bind:this={dialog} on:click|self={closeDialog} on:close={goBack}>
+<dialog bind:this={dialog} on:click|self={closeDialog} on:close={goBack} style:--w={w}>
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
 		<button on:click={closeDialog}><X /></button>
 		<h3>{phrase || `Are you sure you want to ${toTitleCase(name)}?`}</h3>
+		<slot />
 		{#if confirm}
 			<form class="buttons" method="POST" use:enhance>
 				<Button type="submit" on:click={confirmed}>Yes</Button>
@@ -68,7 +70,7 @@
 	dialog {
 		max-width: 90vw;
 		@apply m-auto   rounded-lg border bg-white text-lg shadow-lg;
-		width: 50vh;
+		width: var(--w);
 		&::backdrop {
 			@apply fixed inset-0 z-50 bg-background/0;
 			animation: fadein 300ms forwards;

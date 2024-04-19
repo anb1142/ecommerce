@@ -37,7 +37,7 @@ export const image = createTable('image', {
 export const product_image = createTable('product_image', {
 	id: serial('id').primaryKey(),
 	product_id: serial('product_id'),
-	image_id: text('image_id').notNull()
+	image_id: integer('image_id').notNull()
 });
 
 export const tables = {
