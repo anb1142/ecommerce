@@ -4,7 +4,6 @@ import { category, image, product, product_image } from '@/server/db/schema';
 import { extractFormValues } from '@/utils/extractFormValues';
 import { goBack } from '@/utils/redirects.js';
 import { eq } from 'drizzle-orm';
-import type { N } from 'vitest/dist/reporters-P7C2ytIv.js';
 
 const getCategoriesForSelect = async () =>
 	await db.select({ value: category.id, label: category.name }).from(category);
@@ -27,6 +26,7 @@ const getFieldData = async (id: number) => {
 				category_id: product.category_id,
 				name: product.name,
 				price: product.price,
+				visible: product.visible,
 				description: product.description
 			})
 			.from(product)
@@ -57,15 +57,16 @@ const getValuedFields = async (id: number) => {
 	const fieldData = await getFieldData(id);
 	return fields.map((field) => {
 		const fieldName = field.name;
-		let newField;
+		let newField: typeof field;
 		if (field.name === 'category_id' && field.opts) {
 			newField = { ...field, value: fieldData[fieldName] };
 			newField.opts = field.opts.map((opt) => {
 				return { ...opt, selected: opt.value === fieldData.category_id };
 			});
-		} else {
-			newField = { ...field, value: fieldData[fieldName] };
+			return newField;
 		}
+		newField = { ...field, value: fieldData[fieldName] };
+
 		return newField;
 	});
 };
@@ -78,7 +79,17 @@ export const load = async ({ url }) => {
 	const allImages = await getImages();
 	const productImages = await getProductImages(id, allImages);
 	const addedImageIds = productImages.map((image) => image.id);
-	return { fields: valuedFields, id, allImages, productImages, addedImageIds };
+	const visible = (
+		await db.select({ visible: product.visible }).from(product).where(eq(product.id, id))
+	)[0].visible;
+	return {
+		fields: valuedFields,
+		id,
+		allImages,
+		productImages,
+		addedImageIds,
+		visible
+	};
 };
 
 const setProductImages = async (product_id: number, imageIds: number[]) => {
@@ -102,6 +113,14 @@ export const actions = {
 		await setProductImages(id, imgIds);
 		await db.update(product).set(data).where(eq(product.id, id));
 
+		goBack(url);
+	},
+	setVisible: async ({ request, url }) => {
+		const formData = await request.formData();
+		const id = Number(formData.get('id') as string);
+		const visible = Boolean(Number(formData.get('visibility') as string));
+		console.log(id, visible, formData.get('visibility'));
+		await db.update(product).set({ visible }).where(eq(product.id, id));
 		goBack(url);
 	}
 };

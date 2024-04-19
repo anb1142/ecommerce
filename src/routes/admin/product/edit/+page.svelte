@@ -1,20 +1,17 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Dialog from '@/components/Dialog/Dialog.svelte';
 	import QuickForm from '@/components/QuickForm.svelte';
+	import Button from '@/components/ui/button/button.svelte';
+	import type { IImages } from '@/schemas/index.js';
 	import { objToParams } from '@/utils/objToParams';
 	import { Plus } from 'lucide-svelte';
 	export let data;
 
-	type IImages = {
-		url: string;
-		alt: string;
-		id: number;
-	};
 	let productImages: IImages[] = data.productImages;
 	let addedImageIds: number[] = data.addedImageIds;
-
 	$: selectableImages = data.allImages.filter((img) => !addedImageIds.includes(img.id));
 
 	const addImage = (id: number) => {
@@ -24,6 +21,14 @@
 		goto($page.url.pathname + objToParams({ addImg: undefined }));
 	};
 </script>
+
+{#if data.productImages.length > 0}
+	<form class="visibleForm" action="?/setVisible" method="POST" use:enhance>
+		<input type="hidden" value={data.id} name="id" />
+		<input type="hidden" value={data.visible ? 0 : 1} name="visibility" />
+		<Button type="submit">Set {data.visible ? 'Hidden' : 'Visible'}</Button>
+	</form>
+{/if}
 
 <QuickForm fields={data.fields} action="edit">
 	<input type="hidden" name="id" value={data.id} />
@@ -40,6 +45,7 @@
 		{/if}
 	</div>
 </QuickForm>
+
 {#if selectableImages.length > 0}
 	<Dialog name="addImg" phrase="Add Image" confirm={undefined} w="60rem">
 		<div class="allImages">
@@ -62,6 +68,11 @@
 {/if}
 
 <style lang="scss">
+	.visibleForm {
+		@apply absolute  flex;
+		margin-top: -4.8rem;
+		margin-left: 18.5rem;
+	}
 	.gallery {
 		@apply flex gap-2;
 		> * {
