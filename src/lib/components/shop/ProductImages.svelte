@@ -1,28 +1,26 @@
 <script lang="ts">
+	import type { IImagedProduct, IImages } from '@/schemas';
+
 	export let id: number;
-	let alt = 'a';
-	const images = [
-		'/defaultCardImg.avif',
-		'https://picsum.photos/1000/1000',
-		'https://picsum.photos/900/900'
-	];
+	export let images: IImages[];
 	let selectedImg = 0;
 </script>
 
 <div class="imgs">
 	<div class="main">
-		{#each images as image, i}
+		{#each images as { url: src, alt }, i}
 			<img
-				src={image}
+				{src}
 				{alt}
 				style:--image={i === 0 ? `image-${id}` : ''}
 				style:--i={i}
+				style:--z={~i}
 				style:--selected={selectedImg}
 			/>
 		{/each}
 	</div>
 	<div class="gallery" style:--imgNo={images.length}>
-		{#each images as src, i}
+		{#each images as { url: src, alt }, i}
 			<img {src} {alt} on:click={() => (selectedImg = i)} />
 		{/each}
 	</div>
@@ -35,6 +33,7 @@
 			@apply relative flex w-full;
 			height: 87%;
 			> img {
+				z-index: var(--z);
 				view-transition-name: var(--image);
 				transform: translateX(calc((var(--i) - var(--selected)) * 100%));
 				@apply absolute h-full w-full rounded-lg object-cover object-center transition-transform;

@@ -1,18 +1,13 @@
-<script>
+<script lang="ts">
 	import ShopCard from '@/components/shop/ShopCard.svelte';
-	let p = {
-		id: 1,
-		src: '/defaultCardImg.avif',
-		alt: '',
-		title: 'asd',
-		subtitle: 'asd'
-	};
-	let products = Array.from({ length: 5 }, (_, i) => ({ ...p, id: i + 1 }));
+	import type { IImagedProduct } from '@/schemas';
+
+	export let products: IImagedProduct[];
 </script>
 
 <section>
-	{#each products as product (product.id)}
-		<ShopCard {...product} />
+	{#each products as { id, name, images } (id)}
+		<ShopCard {name} {id} src={images[0].url} alt={images[0].alt} />
 	{/each}
 	{#each Array(products.length < 3 ? 3 - products.length : 0) as i}
 		<span></span>

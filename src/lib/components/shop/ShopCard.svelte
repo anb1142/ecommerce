@@ -2,15 +2,13 @@
 	export let id: number;
 	export let src: string;
 	export let alt: string;
-	export let title: string;
-	export let subtitle: string;
+	export let name: string;
 </script>
 
 <a href={`/shop/${id}`} style:--card="card-{id}">
 	<img {src} {alt} style:--image="image-{id}" />
 	<div>
-		<h4>{title}</h4>
-		<p>{subtitle}</p>
+		<h4>{name}</h4>
 	</div>
 </a>
 

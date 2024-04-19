@@ -1,28 +1,19 @@
-<script>
+<script lang="ts">
 	import ProductImages from '@/components/shop/ProductImages.svelte';
+	import type { IImagedProduct } from '@/schemas';
 
-	let { id, src, alt, title, subtitle } = {
-		id: 1,
-		src: '/defaultCardImg.avif',
-		alt: '',
-		title: 'asd',
-		subtitle: 'asd'
-	};
+	export let product: IImagedProduct;
+	const { id, name, images, description } = product;
 </script>
 
 <section style:--card="card-{id}">
-	<ProductImages  {id} />
+	<ProductImages {images} {id} />
 	<div class="info">
 		<div class="title">
-			<h1>{title}</h1>
-			<p>{subtitle}</p>
+			<h1>{name}</h1>
 		</div>
 		<div class="desc">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad dolorem maxime, minima
-			iure eligendi accusantium magni doloribus saepe illum. Nulla expedita doloribus
-			cumque architecto, aliquam recusandae velit quaerat sint quo inventore totam dolorem
-			laudantium odit, deleniti soluta consequuntur eveniet est? Ab consequatur nam
-			quaerat suscipit culpa, voluptas iusto facere laboriosam?
+			{description}
 		</div>
 	</div>
 </section>
