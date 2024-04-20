@@ -1,1 +1,0 @@
-ALTER TABLE "ecommerce_image" ADD COLUMN "alt" text NOT NULL;

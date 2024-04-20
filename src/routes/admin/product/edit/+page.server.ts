@@ -119,7 +119,6 @@ export const actions = {
 		const formData = await request.formData();
 		const id = Number(formData.get('id') as string);
 		const visible = Boolean(Number(formData.get('visibility') as string));
-		console.log(id, visible, formData.get('visibility'));
 		await db.update(product).set({ visible }).where(eq(product.id, id));
 		goBack(url);
 	}

@@ -15,12 +15,13 @@
 		"test:unit": "vitest",
 		"pg": "drizzle-kit studio",
 		"gsql": "drizzle-kit generate:pg",
-		"migrate": "drizzle-kit push:pg",
+		"migrate": "pnpm dlx tsx ./src/lib/server/db/migrate.ts",
 		"sql": "pnpm gsql && pnpm migrate"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.42.1",
 		"@sveltejs/adapter-auto": "^3.1.1",
+		"@sveltejs/adapter-vercel": "^5.3.0",
 		"@sveltejs/kit": "^2.5.4",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@types/eslint": "^8.56.6",
@@ -53,6 +54,7 @@
 		"bits-ui": "^0.20.0",
 		"cloudinary": "^2.1.0",
 		"clsx": "^2.1.0",
+		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.30.4",
 		"drizzle-zod": "^0.5.1",
 		"lucide-svelte": "^0.359.0",

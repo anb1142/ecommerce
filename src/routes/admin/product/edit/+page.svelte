@@ -53,14 +53,7 @@
 				{#if !addedImageIds.includes(id)}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-					<img
-						{src}
-						{alt}
-						on:click={() => addImage(id)}
-						on:load={() => {
-							console.log(id, addedImageIds.includes(id));
-						}}
-					/>
+					<img {src} {alt} on:click={() => addImage(id)} />
 				{/if}
 			{/each}
 		</div>

@@ -1,5 +1,5 @@
 {
-  "id": "524e9910-4fac-41ba-8d5f-379c1661edb7",
+  "id": "53b6c1e8-7d29-458e-bafa-611aedeafe59",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -49,6 +49,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "alt": {
+          "name": "alt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "url": {
           "name": "url",
           "type": "text",
@@ -61,36 +67,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "ecommerce_product_images": {
-      "name": "ecommerce_product_images",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image_id": {
-          "name": "image_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "ecommerce_products": {
-      "name": "ecommerce_products",
+    "ecommerce_product": {
+      "name": "ecommerce_product",
       "schema": "",
       "columns": {
         "id": {
@@ -140,6 +118,61 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "ecommerce_product_image": {
+      "name": "ecommerce_product_image",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ecommerce_product_image_product_id_ecommerce_product_id_fk": {
+          "name": "ecommerce_product_image_product_id_ecommerce_product_id_fk",
+          "tableFrom": "ecommerce_product_image",
+          "tableTo": "ecommerce_product",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ecommerce_product_image_image_id_ecommerce_image_id_fk": {
+          "name": "ecommerce_product_image_image_id_ecommerce_image_id_fk",
+          "tableFrom": "ecommerce_product_image",
+          "tableTo": "ecommerce_image",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }

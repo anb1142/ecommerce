@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1710829077617,
-      "tag": "0000_bored_bill_hollister",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1710923302215,
-      "tag": "0001_ordinary_marvex",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1712395062982,
-      "tag": "0002_crazy_living_mummy",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1713536930802,
-      "tag": "0003_left_guardian",
+      "when": 1713642227370,
+      "tag": "0000_sticky_kang",
       "breakpoints": true
     }
   ]
