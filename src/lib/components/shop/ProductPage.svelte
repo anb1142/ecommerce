@@ -1,8 +1,7 @@
 <script lang="ts">
 	import ProductImages from '@/components/shop/ProductImages.svelte';
 	import type { IImagedProduct } from '@/schemas';
-	import Button from '../ui/button/button.svelte';
-	import { ShoppingCart } from 'lucide-svelte';
+	import CartButton from './Cart/CartButton.svelte';
 
 	export let product: IImagedProduct;
 	const { id, name, price, images, description } = product;
@@ -18,7 +17,7 @@
 		<div class="desc">
 			{description}
 		</div>
-		<Button class="flex gap-4"><ShoppingCart size="20" /> Add to Cart</Button>
+		<CartButton {id} />
 	</div>
 </section>
 
@@ -27,7 +26,6 @@
 		@apply m-4 mb-0 flex gap-4 rounded-lg border bg-white p-4 shadow-md;
 		@apply absolute inset-0 bottom-4 top-14;
 		view-transition-name: var(--card);
-		// animation-duration: 4s;
 
 		> :global(div) {
 			@apply h-full w-1/2;

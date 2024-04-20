@@ -4,4 +4,5 @@
 	export let data;
 </script>
 
+<Meta title={data.product.name} />
 <ProductPage product={data.product} />
