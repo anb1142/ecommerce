@@ -6,8 +6,8 @@
 </script>
 
 <section>
-	{#each products as { id, name, images } (id)}
-		<ShopCard {name} {id} src={images[0].url} alt={images[0].alt} />
+	{#each products as { id, name, price, images } (id)}
+		<ShopCard {price} {name} {id} src={images[0].url} alt={images[0].alt} />
 	{/each}
 	{#each Array(products.length < 3 ? 3 - products.length : 0) as i}
 		<span></span>

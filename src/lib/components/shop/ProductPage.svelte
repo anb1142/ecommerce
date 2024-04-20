@@ -1,9 +1,11 @@
 <script lang="ts">
 	import ProductImages from '@/components/shop/ProductImages.svelte';
 	import type { IImagedProduct } from '@/schemas';
+	import Button from '../ui/button/button.svelte';
+	import { ShoppingCart } from 'lucide-svelte';
 
 	export let product: IImagedProduct;
-	const { id, name, images, description } = product;
+	const { id, name, price, images, description } = product;
 </script>
 
 <section style:--card="card-{id}">
@@ -11,10 +13,12 @@
 	<div class="info">
 		<div class="title">
 			<h1>{name}</h1>
+			<p>${price}</p>
 		</div>
 		<div class="desc">
 			{description}
 		</div>
+		<Button class="flex gap-4"><ShoppingCart size="20" /> Add to Cart</Button>
 	</div>
 </section>
 
@@ -26,14 +30,17 @@
 		// animation-duration: 4s;
 
 		> :global(div) {
-			@apply w-1/2;
+			@apply h-full w-1/2;
 		}
 
 		.info {
-			@apply flex-col px-4;
+			@apply flex flex-col gap-4 px-4;
 			.title {
-				@apply mb-2 flex flex-col gap-1;
+				@apply flex flex-col gap-1;
 			}
+		}
+		.desc {
+			@apply h-1/2 overflow-y-auto rounded-md border bg-muted p-4 shadow-inner;
 		}
 	}
 	// TODO tablet
@@ -42,7 +49,10 @@
 			@apply flex-col gap-2;
 
 			> :global(div) {
-				@apply h-1/2 w-full;
+				@apply h-3/5 w-full;
+				&:last-of-type {
+					@apply h-2/5;
+				}
 			}
 			.info {
 				@apply px-1;

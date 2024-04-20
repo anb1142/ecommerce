@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let id: number;
+	export let price: string;
 	export let src: string;
 	export let alt: string;
 	export let name: string;
@@ -9,6 +10,7 @@
 	<img {src} {alt} style:--image="image-{id}" />
 	<div>
 		<h4>{name}</h4>
+		<p>${price}</p>
 	</div>
 </a>
 
@@ -29,12 +31,9 @@
 			view-transition-name: var(--image);
 		}
 		> div {
-			@apply flex flex-col gap-1;
+			@apply flex justify-between gap-1;
 			> h4 {
 				@apply text-xl font-semibold;
-			}
-			> p {
-				@apply text-sm;
 			}
 		}
 	}

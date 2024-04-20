@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IImagedProduct, IImages } from '@/schemas';
+	import type { IImages } from '@/schemas';
 
 	export let id: number;
 	export let images: IImages[];
@@ -28,9 +28,10 @@
 
 <style lang="scss">
 	.imgs {
-		@apply flex h-full flex-col justify-between overflow-hidden;
+		@apply flex flex-col justify-between overflow-hidden;
+
 		.main {
-			@apply relative flex w-full;
+			@apply relative flex w-full overflow-hidden rounded-lg;
 			height: 87%;
 			> img {
 				z-index: var(--z);
@@ -43,7 +44,7 @@
 			height: 12%;
 			@apply flex gap-2;
 			> img {
-				@apply cursor-pointer rounded-lg object-cover object-center;
+				@apply aspect-square cursor-pointer rounded-sm object-cover object-center;
 			}
 		}
 	}
