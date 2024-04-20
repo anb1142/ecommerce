@@ -65,7 +65,8 @@
 	}
 
 	:global(main) {
-		@apply relative min-h-screen  pt-14;
+		@apply relative   pt-14;
+		min-height: calc(100svh - 3.5rem);
 	}
 	@media screen and (max-width: 768px) {
 		nav {
@@ -73,6 +74,9 @@
 			> .links {
 				@apply gap-4;
 			}
+		}
+		:global(main) {
+			min-height: calc(100svh - 3.5rem);
 		}
 	}
 </style>

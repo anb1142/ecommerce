@@ -26,7 +26,7 @@
 		@apply m-4 mb-0 flex gap-4 rounded-lg border bg-white p-4 shadow-md;
 		@apply absolute inset-0 bottom-4 top-14;
 		view-transition-name: var(--card);
-
+		height: 90svh;
 		> :global(div) {
 			@apply h-full w-1/2;
 		}

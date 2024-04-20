@@ -47,7 +47,7 @@
 	}
 	@media screen and (max-width: 768px) {
 		.checkout {
-			@apply fixed bottom-4  m-auto  h-fit;
+			@apply fixed bottom-10  m-auto  h-fit;
 			width: 98%;
 		}
 	}
