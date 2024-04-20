@@ -19,4 +19,9 @@
 		@apply grid gap-4 p-4;
 		grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
 	}
+	@media screen and (max-width: 768px) {
+		section {
+			@apply flex flex-col flex-wrap;
+		}
+	}
 </style>

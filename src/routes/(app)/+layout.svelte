@@ -18,16 +18,14 @@
 
 <nav>
 	<a href="/"><img src="/logo.svg" alt="logo" /></a>
-	<div>
+	<div class="links">
 		{#each links as link}
 			{@const href = '/' + link.toLowerCase().replaceAll(' ', '-')}
 			<a {href} class:active={pathname === href}>{link}</a>
 		{/each}
 		<a class="cart" href="/cart" class:active={pathname === '/cart'}>
 			<ShoppingCart size="20" />
-			{#if cart}
-				<span>{cart}</span>
-			{/if}
+			<span class:hide={!cart}>{cart}</span>
 		</a>
 	</div>
 </nav>
@@ -42,24 +40,24 @@
 	}
 
 	nav {
-		@apply fixed flex items-center justify-between;
-		@apply z-50 h-14 w-full px-12;
-		@apply bg-white/60  backdrop-blur-sm;
-		@apply border-y border-border/40 border-t-transparent;
+		@apply fixed z-50 flex h-14 w-full items-center justify-between border-y border-border/40  border-t-transparent bg-white/60 px-12 backdrop-blur-sm;
 		> a > img {
 			@apply h-8;
 		}
-		> div {
+		> .links {
 			@apply flex gap-8;
 			> a {
 				@apply text-sm opacity-60 hover:opacity-80;
 				&.active {
 					@apply opacity-100;
 				}
-				&.cart {
-					@apply relative z-0;
-					> span {
-						@apply absolute -right-3 -top-1 rounded-full bg-primary px-1 text-xs font-bold text-white;
+			}
+			.cart {
+				@apply relative z-0;
+				> span {
+					@apply absolute -right-3 -top-1 rounded-full bg-primary px-1 text-xs font-bold text-white transition-opacity;
+					&.hide {
+						@apply opacity-0;
 					}
 				}
 			}
@@ -68,5 +66,13 @@
 
 	:global(main) {
 		@apply relative min-h-screen  pt-14;
+	}
+	@media screen and (max-width: 768px) {
+		nav {
+			@apply px-6;
+			> .links {
+				@apply gap-4;
+			}
+		}
 	}
 </style>
