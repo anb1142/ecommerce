@@ -18,19 +18,27 @@
 
 	onMount(async () => {
 		cart = getCart();
+		if (Object.keys(cart).length === 0) return;
 		productData = await fetchCart(cart);
 	});
 </script>
 
-<section class="cart">
-	<CartProducts bind:products bind:cart />
-	<CartCheckout bind:products bind:cart />
+<section class="cart" class:empty={products.length === 0}>
+	{#if products.length > 0}
+		<CartProducts bind:products bind:cart />
+		<CartCheckout bind:products bind:cart />
+	{:else}
+		<h1>Cart is empty</h1>
+	{/if}
 </section>
 
 <style lang="scss">
 	.cart {
 		@apply relative  flex justify-center gap-4 p-4;
 		padding-inline: 10vw;
+		> h1 {
+			@apply fixed left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center;
+		}
 	}
 	@media screen and (max-width: 768px) {
 		.cart {
