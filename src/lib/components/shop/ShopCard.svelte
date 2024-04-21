@@ -27,7 +27,7 @@
 
 		> img {
 			@apply w-full rounded-lg;
-			@apply aspect-square object-cover;
+			@apply aspect-square object-contain;
 			view-transition-name: var(--image);
 		}
 		> div {

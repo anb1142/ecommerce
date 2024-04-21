@@ -40,7 +40,7 @@
 	}
 
 	nav {
-		@apply fixed z-50 flex h-14 w-full items-center justify-between border-y border-border/40  border-t-transparent bg-white/60 px-12 backdrop-blur-sm;
+		@apply fixed z-50 flex h-14 w-full items-center justify-between border-y border-border/40  border-t-transparent bg-white/60 px-12 backdrop-blur-md;
 		@apply px-[4vw] lg:px-[7.8vw];
 
 		> a > img {

@@ -4,7 +4,6 @@
 	export let id: number;
 	export let images: IImages[];
 	let selectedImg = 0;
-	console.log(images.length);
 </script>
 
 <div class="imgs">
@@ -43,14 +42,14 @@
 				z-index: var(--z);
 				view-transition-name: var(--image);
 				transform: translateX(calc((var(--i) - var(--selected)) * 100%));
-				@apply absolute h-full w-full rounded-lg object-cover object-center transition-transform;
+				@apply absolute h-full  w-full rounded-lg object-contain object-center transition-transform;
 			}
 		}
 		.gallery {
 			height: 12%;
 			@apply flex gap-2;
 			> img {
-				@apply aspect-square cursor-pointer rounded-sm object-cover object-center;
+				@apply aspect-square cursor-pointer rounded-sm object-contain object-center;
 			}
 		}
 	}
