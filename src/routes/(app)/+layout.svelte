@@ -6,7 +6,8 @@
 	import { onMount } from 'svelte';
 
 	$: pathname = $page.url.pathname;
-	const links = ['Shop', 'Contact Us', 'About'];
+	// const links = ['Shop', 'Contact Us', 'About'];
+	const links = ['Shop'];
 	let cart = 0;
 	onMount(() => {
 		const cartTimer = setInterval(() => {
