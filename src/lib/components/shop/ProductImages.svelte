@@ -4,10 +4,11 @@
 	export let id: number;
 	export let images: IImages[];
 	let selectedImg = 0;
+	console.log(images.length);
 </script>
 
 <div class="imgs">
-	<div class="main">
+	<div class="main" class:full={images.length === 1}>
 		{#each images as { url: src, alt }, i}
 			<img
 				{src}
@@ -19,11 +20,13 @@
 			/>
 		{/each}
 	</div>
-	<div class="gallery" style:--imgNo={images.length}>
-		{#each images as { url: src, alt }, i}
-			<img {src} {alt} on:click={() => (selectedImg = i)} />
-		{/each}
-	</div>
+	{#if images.length > 1}
+		<div class="gallery" style:--imgNo={images.length}>
+			{#each images as { url: src, alt }, i}
+				<img {src} {alt} on:click={() => (selectedImg = i)} />
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -33,6 +36,9 @@
 		.main {
 			@apply relative flex w-full overflow-hidden rounded-lg;
 			height: 87%;
+			&.full {
+				@apply h-full;
+			}
 			> img {
 				z-index: var(--z);
 				view-transition-name: var(--image);
