@@ -6,8 +6,8 @@ import { eq } from 'drizzle-orm';
 export const getImagedProduct = async (id: number) => {
 	const rows = await db
 		.select()
-		.from(product_image)
-		.innerJoin(product, eq(product_image.product_id, product.id))
+		.from(product)
+		.innerJoin(product_image, eq(product_image.product_id, product.id))
 		.innerJoin(image, eq(product_image.image_id, image.id))
 		.where(eq(product.id, id));
 
@@ -18,13 +18,13 @@ export const getImagedProduct = async (id: number) => {
 	}
 	return p;
 };
-export const getImagedProducts = async (limit: undefined | number = undefined) => {
+export const getImagedProducts = async (limit = 6) => {
 	const query = db
 		.select()
-		.from(product_image)
-		.innerJoin(product, eq(product_image.product_id, product.id))
+		.from(product)
+		.limit(limit)
+		.innerJoin(product_image, eq(product_image.product_id, product.id))
 		.innerJoin(image, eq(product_image.image_id, image.id));
-	// if (limit) query.limit(limit);
 	const rows = await query;
 	const imageProduct = (row: (typeof rows)[number]) => {
 		const p = row.product as IImagedProduct;
@@ -39,6 +39,5 @@ export const getImagedProducts = async (limit: undefined | number = undefined) =
 		productObj[row.product.id] = imageProduct(row);
 	}
 	const p = Object.values(productObj);
-	if (limit) p.splice(0, limit);
 	return p;
 };
