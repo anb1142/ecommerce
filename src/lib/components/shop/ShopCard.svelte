@@ -31,7 +31,7 @@
 			view-transition-name: var(--image);
 		}
 		> div {
-			@apply flex justify-between gap-1;
+			@apply flex items-center justify-between gap-1;
 			> h4 {
 				@apply text-xl font-semibold;
 			}
