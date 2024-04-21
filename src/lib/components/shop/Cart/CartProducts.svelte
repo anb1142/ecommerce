@@ -65,7 +65,7 @@
 						@apply text-xl font-semibold hover:underline;
 					}
 					> button {
-						@apply w-fit rounded-sm p-2 hover:bg-red-600 hover:text-white;
+						@apply w-fit rounded-sm bg-red-50 p-2 transition-colors hover:bg-red-600 hover:text-white;
 					}
 				}
 				.quantity {

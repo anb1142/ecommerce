@@ -34,16 +34,9 @@
 
 <style lang="scss">
 	.cart {
-		@apply relative  flex justify-center gap-4 p-4;
-		padding-inline: 10vw;
+		@apply relative  flex flex-col justify-center gap-4 p-4 px-[1vw] lg:flex-row lg:px-[10vw];
 		> h1 {
 			@apply fixed left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center;
-		}
-	}
-	@media screen and (max-width: 768px) {
-		.cart {
-			@apply flex-col;
-			padding-inline: 1vw;
 		}
 	}
 </style>
