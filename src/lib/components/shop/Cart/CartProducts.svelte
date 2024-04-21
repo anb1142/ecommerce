@@ -53,7 +53,7 @@
 			animation-duration: 4s;
 
 			> img {
-				@apply aspect-square h-full rounded-lg object-cover;
+				@apply aspect-square h-full rounded-lg object-contain;
 				view-transition-name: var(--image);
 			}
 			.txt {
