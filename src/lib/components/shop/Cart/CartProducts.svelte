@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { IImagedProduct } from '@/schemas';
-	import { getCart, removeFromCart, type ICartState, deleteCartItem } from '@/utils/cart';
-	import CartButton from './CartButton.svelte';
-	import Button from '@/components/ui/button/button.svelte';
+	import { deleteCartItem, getCart, type ICartState } from '@/utils/cart';
 	import { Trash2 } from 'lucide-svelte';
+	import CartButton from './CartButton.svelte';
 
 	export let products: IImagedProduct[] = [];
 	export let cart: ICartState = {};
@@ -18,7 +17,7 @@
 		{@const alt = images[0].alt}
 		<div class="product">
 			<img {src} {alt} />
-			<div class="txt">
+			<div class="details">
 				<div class="info">
 					<a href={`/shop/${id}`}>{name}</a>
 					<p>${price} * {cart[id].quantity} = ${Number(price) * cart[id].quantity}</p>
@@ -48,7 +47,7 @@
 		@apply flex flex-col gap-4;
 		width: 70%;
 		.product {
-			@apply flex  h-32 items-center justify-between gap-2 overflow-hidden rounded-lg border  bg-white p-4 shadow-md;
+			@apply flex   h-32 items-center gap-2 overflow-hidden rounded-lg border  bg-white p-2  shadow-md lg:p-4;
 			view-transition-name: var(--card);
 			animation-duration: 4s;
 
@@ -56,13 +55,15 @@
 				@apply aspect-square h-full rounded-lg object-contain;
 				view-transition-name: var(--image);
 			}
-			.txt {
-				@apply flex  w-full justify-between;
+			.details {
+				@apply flex  w-full items-center justify-between overflow-hidden py-2;
+				// width: 75%;
 
 				.info {
-					@apply ml-4  flex h-full flex-col justify-between gap-1;
+					@apply ml-4  flex h-full flex-col justify-between gap-1 overflow-hidden text-ellipsis;
+					// width: 80%;
 					> a {
-						@apply text-xl font-semibold hover:underline;
+						@apply overflow-hidden text-ellipsis text-nowrap pr-2 text-xl font-semibold hover:underline;
 					}
 					> button {
 						@apply w-fit rounded-sm bg-red-50 p-2 transition-colors hover:bg-red-600 hover:text-white;

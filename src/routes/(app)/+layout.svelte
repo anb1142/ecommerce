@@ -68,8 +68,8 @@
 	}
 
 	:global(main) {
-		@apply relative   pt-14;
-		min-height: calc(100svh - 3.5rem);
+		@apply relative pt-14;
+		min-height: calc(100svh);
 	}
 	@media screen and (max-width: 768px) {
 		nav {

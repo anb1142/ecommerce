@@ -31,9 +31,9 @@
 			view-transition-name: var(--image);
 		}
 		> div {
-			@apply flex items-center justify-between gap-1;
+			@apply flex items-center justify-between gap-1 text-xl;
 			> h4 {
-				@apply text-xl font-semibold;
+				@apply w-10/12 overflow-hidden text-ellipsis text-nowrap text-xl font-semibold;
 			}
 		}
 	}

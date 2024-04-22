@@ -14,12 +14,18 @@
 	};
 	let productData: IImagedProduct[] = [];
 	let cart: ICartState = {};
+	let loaded = false;
+
 	$: products = productData.filter(({ id }) => id in cart);
 
 	onMount(async () => {
 		cart = getCart();
-		if (Object.keys(cart).length === 0) return;
+		if (Object.keys(cart).length === 0) {
+			loaded = true;
+			return;
+		}
 		productData = await fetchCart(cart);
+		loaded = true;
 	});
 </script>
 
@@ -28,7 +34,7 @@
 		<CartProducts bind:products bind:cart />
 		<CartCheckout bind:products bind:cart />
 	{:else}
-		<h1>Cart is empty</h1>
+		<h1>{loaded ? 'Cart is empty' : 'Loading...'}</h1>
 	{/if}
 </section>
 
