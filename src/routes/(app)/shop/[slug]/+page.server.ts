@@ -1,9 +1,8 @@
 import { getImagedProduct } from '@/utils/getProducts';
+import { hasInUrl } from '@/utils/hasInUrl.ts';
 
-export async function load({ params }) {
-	const id = Number(params.slug);
-	const product = await getImagedProduct(id);
-	return {
-		product
-	};
+export async function load({ params, url }) {
+	const query = getImagedProduct(Number(params.slug));
+	const product = hasInUrl(url) ? query : await query;
+	return { product };
 }

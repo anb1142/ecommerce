@@ -6,7 +6,7 @@
 	export let name: string;
 </script>
 
-<a href={`/shop/${id}`} style:--card="card-{id}">
+<a href={`/shop/${id}?has=1`} style:--card="card-{id}">
 	<img {src} {alt} style:--image="image-{id}" />
 	<div>
 		<h4>{name}</h4>

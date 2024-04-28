@@ -16,9 +16,23 @@ const getCurrentParams = () => {
 	unsubscribe();
 	return obj;
 };
+const getCurrentPath = () => {
+	let path;
+	const unsubscribe = page.subscribe((page) => {
+		const url = page.url;
+		path = url.origin + url.pathname;
+	});
+	unsubscribe();
+	return path;
+};
 
 export const objToParams = (data: IParamsObj) => {
 	const current = getCurrentParams();
 	const newParams = qs.stringify({ ...current, ...data });
+	if (newParams === '') return '';
 	return `?${newParams}`;
+};
+export const urlObjToParams = (data: IParamsObj) => {
+	objToParams(data);
+	return `${getCurrentPath()}${objToParams(data)}`;
 };

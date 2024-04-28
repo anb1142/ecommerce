@@ -1,24 +1,30 @@
 <script>
 	import { page } from '$app/stores';
 	import ViewTransition from '@/components/ViewTransition.svelte';
+	import { setProducts } from '@/stores/products';
 	import { getCart } from '@/utils/cart';
 	import { ShoppingCart } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	export let data;
 
 	$: pathname = $page.url.pathname;
-	// const links = ['Shop', 'Contact Us', 'About'];
+	$: console.log(pathname === '/' ? '?has=1' : '');
 	const links = ['Shop'];
-	let cart = 0;
+
+	let cartCount = 0;
 	onMount(() => {
 		const cartTimer = setInterval(() => {
-			cart = Object.values(getCart()).reduce((acc, curr) => acc + curr.quantity, 0);
+			cartCount = Object.values(getCart()).reduce((acc, curr) => acc + curr.quantity, 0);
 		}, 100);
 		return () => clearInterval(cartTimer);
+	});
+	onMount(async () => {
+		setProducts(await data.allProducts);
 	});
 </script>
 
 <nav>
-	<a href="/"><img src="/logo.svg" alt="logo" /></a>
+	<a href={`/${pathname === '/' ? '' : '?has=1'}`}><img src="/logo.svg" alt="logo" /></a>
 	<div class="links">
 		{#each links as link}
 			{@const href = '/' + link.toLowerCase().replaceAll(' ', '-')}
@@ -26,7 +32,7 @@
 		{/each}
 		<a class="cart" href="/cart" class:active={pathname === '/cart'}>
 			<ShoppingCart size="20" />
-			<span class:hide={!cart}>{cart}</span>
+			<span class:hide={!cartCount}>{cartCount}</span>
 		</a>
 	</div>
 </nav>

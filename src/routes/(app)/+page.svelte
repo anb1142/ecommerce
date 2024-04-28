@@ -2,8 +2,20 @@
 	import Services from '@/components/Home/Services.svelte';
 	import Meta from '@/components/Meta.svelte';
 	import ShopCards from '@/components/shop/ShopCards.svelte';
+	import type { IImagedProduct } from '@/schemas';
+	import { productStore, updateProducts } from '@/stores/products.ts';
+	import { isPromise } from '@/utils/isPromise.ts';
 	import { Facebook, Twitter, Youtube } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
 	export let data;
+	onMount(async () => {
+		updateProducts(await data.products);
+	});
+
+	if (!isPromise(data.products)) updateProducts(data.products as IImagedProduct[]);
+	$: products = Object.values($productStore).slice(0, 3);
+
 	type ISocial = { href: string; Icon: typeof Facebook };
 	let socials: ISocial[] = [
 		{ href: 'http://facebook.com', Icon: Facebook },
@@ -21,7 +33,7 @@
 	<div class="popular">
 		<h1>Most Popular</h1>
 
-		<ShopCards products={data.products} noSpacing />
+		<ShopCards {products} noSpacing />
 	</div>
 	<Services />
 </section>
