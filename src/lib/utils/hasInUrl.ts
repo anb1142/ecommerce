@@ -7,5 +7,5 @@ export const hasInUrl = (url: URL) => {
 
 export const removeHas = () => {
 	const url = urlObjToParams({ has: undefined });
-	goto(url);
+	goto(url, { replaceState: true });
 };
