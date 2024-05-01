@@ -22,7 +22,10 @@
 
 <style lang="scss">
 	a {
-		@apply relative z-0;
+		@apply relative z-0 opacity-60;
+		&.active {
+			@apply opacity-100;
+		}
 		> span {
 			@apply absolute -right-3 -top-1 rounded-full bg-primary px-1 text-xs font-bold text-white transition-opacity;
 			&.hide {
