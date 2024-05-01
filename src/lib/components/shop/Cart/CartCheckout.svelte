@@ -28,13 +28,11 @@
 
 <style lang="scss">
 	.checkout {
-		@apply rounded-lg border  bg-white p-4 shadow-md;
+		@apply flex h-full  flex-col gap-2 rounded-lg border bg-white p-4 shadow-md;
+		width: 28%;
 		h2 {
 			@apply mb-2 scroll-m-20 text-2xl font-semibold tracking-tight;
 		}
-
-		@apply flex h-full flex-col gap-2;
-		width: 28%;
 		> p {
 			@apply flex  justify-between;
 			.name {
@@ -47,8 +45,8 @@
 	}
 	@media screen and (max-width: 768px) {
 		.checkout {
-			@apply fixed bottom-10  m-auto  h-fit;
-			width: 98%;
+			@apply fixed bottom-20  m-auto h-fit w-full;
+			width: calc(100% - 1rem);
 		}
 	}
 </style>

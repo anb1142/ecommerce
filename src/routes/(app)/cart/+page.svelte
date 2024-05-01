@@ -4,4 +4,10 @@
 </script>
 
 <Meta title="Cart" />
-<Cart />
+<section><Cart /></section>
+
+<style lang="scss">
+	section {
+		@apply px-0 lg:px-[10vw];
+	}
+</style>

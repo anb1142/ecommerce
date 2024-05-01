@@ -3,13 +3,13 @@
 	import { ShoppingCart } from 'lucide-svelte';
 	import { addToCart, getCart, removeFromCart, type ICartState } from '@/utils/cart';
 	import { onMount } from 'svelte';
-	export let id: string | number;
+	export let id: number;
 	export let type: '-' | '+' | undefined = undefined;
 	let cart: ICartState = {};
 
 	const handleClick = () => {
-		if (type === '-') removeFromCart(String(id));
-		else addToCart(String(id));
+		if (type === '-') removeFromCart(Number(id));
+		else addToCart(Number(id));
 		cart = getCart();
 	};
 	onMount(() => {

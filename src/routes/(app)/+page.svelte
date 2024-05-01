@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Hero from '@/components/Home/Hero.svelte';
 	import Services from '@/components/Home/Services.svelte';
 	import Meta from '@/components/Meta.svelte';
 	import ShopCards from '@/components/shop/ShopCards.svelte';
@@ -12,9 +13,8 @@
 	onMount(async () => {
 		updateProducts(await data.products);
 	});
-
 	if (!isPromise(data.products)) updateProducts(data.products as IImagedProduct[]);
-	$: products = Object.values($productStore).slice(0, 3);
+	$: products = Object.values($productStore).slice(0, 4);
 
 	type ISocial = { href: string; Icon: typeof Facebook };
 	let socials: ISocial[] = [
@@ -26,14 +26,11 @@
 
 <Meta />
 <section class="home">
-	<div class="hero">
-		<img src="/hero-1.png" alt="hero1" />
-	</div>
-
+	<Hero />
 	<div class="popular">
 		<h1>Most Popular</h1>
 
-		<ShopCards {products} noSpacing />
+		<ShopCards {products} />
 	</div>
 	<Services />
 </section>
@@ -53,16 +50,8 @@
 
 <style lang="scss">
 	.home {
-		@apply mx-[4vw] lg:mx-[7vw];
 		@apply flex flex-col gap-10;
-		.hero {
-			@apply mt-6  flex h-[51vw] items-center justify-center overflow-hidden rounded-lg lg:h-full;
 
-			> img {
-				@apply h-full w-full bg-blue-100  object-cover object-center;
-				// aspect-ratio: 1/1.5;
-			}
-		}
 		.popular {
 			> h1 {
 				@apply mb-5 text-center;
@@ -71,7 +60,6 @@
 	}
 	footer {
 		@apply relative py-6;
-		@apply mx-[4vw] lg:mx-[7vw];
 
 		> div {
 			@apply flex flex-col items-center  justify-center gap-4 rounded-lg border  bg-white p-6 drop-shadow-xl lg:flex-row lg:gap-8;

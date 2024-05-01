@@ -3,10 +3,9 @@
 	import type { IImagedProduct } from '@/schemas';
 
 	export let products: IImagedProduct[];
-	export let noSpacing = false;
 </script>
 
-<section class:noSpacing>
+<section>
 	{#each products as { id, name, price, images } (id)}
 		<ShopCard {price} {name} {id} src={images[0].url} alt={images[0].alt} />
 	{/each}
@@ -18,11 +17,7 @@
 <style lang="scss">
 	section {
 		@apply grid gap-4 py-4;
-		@apply mx-[4vw] lg:mx-[7vw];
-		grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
-		&.noSpacing {
-			@apply m-0;
-		}
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 	}
 	@media screen and (max-width: 768px) {
 		section {

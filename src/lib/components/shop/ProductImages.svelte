@@ -42,7 +42,7 @@
 				z-index: var(--z);
 				view-transition-name: var(--image);
 				transform: translateX(calc((var(--i) - var(--selected)) * 100%));
-				@apply absolute h-full  w-full rounded-lg object-contain object-center transition-transform;
+				@apply absolute h-full  w-full rounded-lg bg-slate-50 object-contain object-center  transition-transform;
 			}
 		}
 		.gallery {

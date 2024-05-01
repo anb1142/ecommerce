@@ -21,20 +21,22 @@
 	</div>
 </section>
 
+<!-- TODO only works in svh -->
 <style lang="scss">
 	section {
-		@apply m-4  mb-0 flex gap-4 rounded-lg border bg-white p-4 shadow-md md:flex-row lg:mx-[8vw];
-		@apply mx-[4vw] lg:mx-[7vw];
+		@apply flex gap-4 rounded-lg border bg-white  p-4 shadow-md md:mt-4 md:flex-row;
 
-		@apply absolute inset-0 bottom-4 top-14;
+		// @apply inset-0 bottom-14 top-4;
 		view-transition-name: var(--card);
-		height: 90svh;
+		height: calc(100svh - var(--navHeight) - 3rem);
 		> :global(div) {
-			@apply h-full w-1/2;
+			@apply h-full;
+			width: 55%;
 		}
 
 		.info {
-			@apply flex flex-col gap-4 px-4;
+			@apply flex  flex-col gap-4 px-4;
+			width: 45%;
 			.title {
 				@apply flex flex-col gap-1;
 			}
@@ -55,7 +57,7 @@
 				}
 			}
 			.info {
-				@apply px-1;
+				@apply w-full px-1;
 			}
 		}
 	}

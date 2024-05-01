@@ -23,7 +23,7 @@
 					<p>${price} * {cart[id].quantity} = ${Number(price) * cart[id].quantity}</p>
 					<button
 						on:click={() => {
-							deleteCartItem(String(id));
+							deleteCartItem(id);
 							resetCart();
 						}}
 					>
@@ -57,11 +57,9 @@
 			}
 			.details {
 				@apply flex  w-full items-center justify-between overflow-hidden py-2;
-				// width: 75%;
 
 				.info {
 					@apply ml-4  flex h-full flex-col justify-between gap-1 overflow-hidden text-ellipsis;
-					// width: 80%;
 					> a {
 						@apply overflow-hidden text-ellipsis text-nowrap pr-2 text-xl font-semibold hover:underline;
 					}
