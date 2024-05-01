@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { productStore, getProducts } from '@/stores/products';
+	import { productStore } from '@/stores/products';
 	import { getCart, type ICartState } from '@/utils/cart.ts';
 	import { onMount } from 'svelte';
 	import CartCheckout from './CartCheckout.svelte';
 	import CartProducts from './CartProducts.svelte';
+	export let loaded: boolean = true;
 
 	let cart: ICartState = {};
-	let loaded = false;
-
 	$: products = Object.values($productStore).filter(({ id }) => id in cart);
 	onMount(async () => {
 		cart = getCart();
-		const ids = Object.keys(cart).map(Number);
-		await getProducts(ids);
-		loaded = true;
 	});
 </script>
 
