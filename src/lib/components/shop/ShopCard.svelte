@@ -17,7 +17,7 @@
 <style lang="scss">
 	a {
 		@apply rounded-lg border bg-white text-card-foreground shadow-md;
-		@apply flex cursor-pointer flex-col gap-4 p-4;
+		@apply flex w-full cursor-pointer flex-col gap-4 p-4;
 		view-transition-name: var(--card);
 		animation-duration: 4s;
 

@@ -18,6 +18,6 @@
 	section {
 		@apply flex flex-col flex-wrap;
 		@apply gap-4 py-4 md:grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 	}
 </style>
