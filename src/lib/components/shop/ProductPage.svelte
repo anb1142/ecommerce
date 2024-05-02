@@ -21,7 +21,6 @@
 	</div>
 </section>
 
-<!-- TODO only works in svh -->
 <style lang="scss">
 	section {
 		@apply flex rounded-lg border bg-white p-4 shadow-md;
@@ -29,7 +28,7 @@
 		@apply lg:flex-row lg:gap-4;
 
 		view-transition-name: var(--card);
-		height: calc(100svh - var(--navHeight) - 3rem);
+		height: calc(100dvh - var(--navHeight) - 3rem);
 		> :global(div) {
 			@apply h-3/5 w-full;
 			@apply md:h-[50%];
