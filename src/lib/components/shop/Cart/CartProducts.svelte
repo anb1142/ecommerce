@@ -44,10 +44,9 @@
 
 <style lang="scss">
 	.products {
-		@apply flex flex-col gap-4;
-		width: 70%;
+		@apply flex w-full flex-col gap-4 md:w-[70%];
 		.product {
-			@apply flex   h-32 items-center gap-2 overflow-hidden rounded-lg border  bg-white p-2  shadow-md lg:p-4;
+			@apply flex  h-32 items-center gap-2 overflow-hidden rounded-lg border  bg-white p-2  shadow-md lg:p-4;
 			view-transition-name: var(--card);
 			animation-duration: 4s;
 
@@ -71,12 +70,6 @@
 					@apply flex flex-col text-center;
 				}
 			}
-		}
-	}
-	@media screen and (max-width: 768px) {
-		.products {
-			@apply flex flex-col gap-4;
-			width: 100%;
 		}
 	}
 </style>

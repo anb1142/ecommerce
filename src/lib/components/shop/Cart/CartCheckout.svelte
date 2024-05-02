@@ -28,8 +28,12 @@
 
 <style lang="scss">
 	.checkout {
-		@apply flex h-full  flex-col gap-2 rounded-lg border bg-white p-4 shadow-md;
-		width: 28%;
+		--w: calc(100% - 1.5rem);
+		--wMd: 28%;
+		@apply flex   flex-col gap-2 rounded-lg border bg-white p-4 shadow-md;
+		@apply fixed bottom-24  mx-auto h-fit w-[--w];
+		@apply md:static  md:bottom-0 md:h-full md:w-[--wMd];
+
 		h2 {
 			@apply mb-2 scroll-m-20 text-2xl font-semibold tracking-tight;
 		}
@@ -41,12 +45,6 @@
 			&:last-of-type {
 				@apply py-2 font-semibold;
 			}
-		}
-	}
-	@media screen and (max-width: 768px) {
-		.checkout {
-			@apply fixed bottom-20  m-auto h-fit w-full;
-			width: calc(100% - 1rem);
 		}
 	}
 </style>

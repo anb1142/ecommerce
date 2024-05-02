@@ -24,19 +24,24 @@
 <!-- TODO only works in svh -->
 <style lang="scss">
 	section {
-		@apply flex gap-4 rounded-lg border bg-white  p-4 shadow-md md:mt-4 md:flex-row;
+		@apply flex rounded-lg border bg-white p-4 shadow-md;
+		@apply flex-col gap-2;
+		@apply lg:flex-row lg:gap-4;
 
-		// @apply inset-0 bottom-14 top-4;
 		view-transition-name: var(--card);
 		height: calc(100svh - var(--navHeight) - 3rem);
 		> :global(div) {
-			@apply h-full;
-			width: 55%;
+			@apply h-3/5 w-full;
+			@apply md:h-[50%];
+			@apply lg:h-full lg:w-[55%];
 		}
 
 		.info {
-			@apply flex  flex-col gap-4 px-4;
-			width: 45%;
+			@apply flex flex-col gap-4;
+			@apply h-2/5 w-full px-1;
+			@apply md:h-[50%];
+			@apply lg:h-full lg:w-[45%] lg:px-4;
+
 			.title {
 				@apply flex flex-col gap-1;
 			}
@@ -46,19 +51,4 @@
 		}
 	}
 	// TODO tablet
-	@media screen and (max-width: 768px) {
-		section {
-			@apply flex-col gap-2;
-
-			> :global(div) {
-				@apply h-3/5 w-full;
-				&:last-of-type {
-					@apply h-2/5;
-				}
-			}
-			.info {
-				@apply w-full px-1;
-			}
-		}
-	}
 </style>

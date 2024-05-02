@@ -19,21 +19,22 @@
 
 <style lang="scss">
 	:global(:root) {
-		--xSpace: 2vw;
+		--xSpace: 3vw;
+		--xSpaceMd: 1vw;
 		--navHeight: 3.5rem;
 
 		view-transition-name: none;
 	}
 
 	:global(main) {
-		@apply relative m-auto px-[--xSpace] pt-[--navHeight];
-		// width: 1280px;
-		min-height: calc(100svh);
-	}
-	@media screen and (max-width: 768px) {
-		:global(main) {
-			min-height: calc(100svh - var(--navHeight));
-			@apply pb-[--navHeight] pt-4;
-		}
+		@apply relative;
+
+		--minH: calc(100svh - var(--navHeight));
+		--navBottomSpacing: calc(1rem + var(--navHeight));
+		@apply min-h-[--minH] px-[--xSpace] pb-[--navBottomSpacing] pt-4;
+
+		--minHMd: 100svh;
+		--navTopSpacing: calc(1.5rem + var(--navHeight));
+		@apply md:min-h-[--minHMd] md:px-[--xSpaceMd] md:pb-0 md:pt-[--navTopSpacing];
 	}
 </style>

@@ -11,5 +11,5 @@
 </script>
 
 <Meta title="Products" />
-<h1 class="lg:pt-6">Products</h1>
+<h1>Products</h1>
 <ShopCards {products} />

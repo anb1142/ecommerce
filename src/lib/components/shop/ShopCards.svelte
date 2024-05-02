@@ -16,12 +16,8 @@
 
 <style lang="scss">
 	section {
-		@apply grid gap-4 py-4;
+		@apply flex flex-col flex-wrap;
+		@apply gap-4 py-4 md:grid;
 		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-	}
-	@media screen and (max-width: 768px) {
-		section {
-			@apply flex flex-col flex-wrap;
-		}
 	}
 </style>

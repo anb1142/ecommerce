@@ -25,7 +25,7 @@
 
 <style lang="scss">
 	.cart {
-		@apply relative  flex flex-col justify-between  py-4 lg:flex-row;
+		@apply relative  flex flex-col justify-between pb-4 md:flex-row;
 		> h1 {
 			@apply fixed left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center;
 		}
