@@ -19,22 +19,29 @@
 
 <style lang="scss">
 	:global(:root) {
-		--xSpace: 3vw;
-		--xSpaceMd: 1vw;
 		--navHeight: 3.5rem;
+		--minH: 100dvh;
+		--inlinePadding: 1vw;
+		--defaultSpace: 0.7rem;
 
+		--navTopSpace: calc(var(--defaultSpace) * 2 + var(--navHeight));
+		--navBtmSpace: var(--defaultSpace);
+
+		--navTotalYSpace: calc(var(--navHeight) + var(--defaultSpace) * 3);
 		view-transition-name: none;
+	}
+	@media screen and (max-width: 768px) {
+		:global(:root) {
+			--inlinePadding: 3vw;
+
+			--defaultSpace: 1rem;
+			--navTopSpace: var(--defaultSpace);
+			--navBtmSpace: calc(var(--defaultSpace) * 2 + var(--navHeight));
+		}
 	}
 
 	:global(main) {
 		@apply relative;
-
-		--minH: calc(100svh - var(--navHeight));
-		--navBottomSpacing: calc(1rem + var(--navHeight));
-		@apply min-h-[--minH] px-[--xSpace] pb-[--navBottomSpacing] pt-4;
-
-		--minHMd: 100svh;
-		--navTopSpacing: calc(1.5rem + var(--navHeight));
-		@apply md:min-h-[--minHMd] md:px-[--xSpaceMd] md:pb-0 md:pt-[--navTopSpacing];
+		@apply min-h-[--minH] px-[--inlinePadding] pb-[--navBtmSpace] pt-[--navTopSpace];
 	}
 </style>

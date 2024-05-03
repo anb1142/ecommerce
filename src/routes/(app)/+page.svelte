@@ -59,7 +59,7 @@
 		}
 	}
 	footer {
-		@apply relative py-6;
+		@apply relative pb-2 pt-6;
 
 		> div {
 			@apply flex flex-col items-center  justify-center gap-4 rounded-lg border  bg-white p-6 drop-shadow-xl lg:flex-row lg:gap-8;

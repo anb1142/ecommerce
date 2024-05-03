@@ -7,7 +7,7 @@
 	const { id, name, price, images, description } = product;
 </script>
 
-<section style:--card="card-{id}">
+<div style:--card="card-{id}" class="product">
 	<ProductImages {images} {id} />
 	<div class="info">
 		<div class="title">
@@ -19,16 +19,16 @@
 		</div>
 		<CartButton {id} />
 	</div>
-</section>
+</div>
 
 <style lang="scss">
-	section {
+	.product {
+		height: calc(100dvh - var(--navTotalYSpace));
 		@apply flex rounded-lg border bg-white p-4 shadow-md;
 		@apply flex-col gap-2;
 		@apply lg:flex-row lg:gap-4;
 
 		view-transition-name: var(--card);
-		height: calc(100dvh - var(--navHeight) - 3rem);
 		> :global(div) {
 			@apply h-3/5 w-full;
 			@apply md:h-[50%];
