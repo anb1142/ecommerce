@@ -1,16 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import NavLinks from './NavLinks.svelte';
+	import { onNavigate } from '$app/navigation';
 	let scrolled = false;
-	let end = false; // TODO doesn't work in mobile
+	let end = false;
+
+	const checkPositions = () => {
+		scrolled = window.scrollY > 0;
+		end = reachedEndofPage();
+	};
+	const reachedEndofPage = () =>
+		document.body.offsetHeight === window.innerHeight ||
+		(window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+			document.body.offsetHeight > window.innerHeight);
+
 	onMount(() => {
-		window.addEventListener('scroll', () => {
-			scrolled = window.scrollY > 0;
-			end =
-				window.innerHeight + window.scrollY === document.body.offsetHeight &&
-				document.body.offsetHeight > window.innerHeight;
-		});
+		window.addEventListener('scroll', checkPositions);
 	});
+	onNavigate(checkPositions);
 </script>
 
 <nav class:scrolled class:end>
@@ -33,15 +40,15 @@
 			@apply bg-white/60;
 			@apply md:left-[--navShrinkSpace] md:right-[--navShrinkSpace];
 		}
-		&.end {
-			--navInlineSpace: 3vw;
-			@apply bg-white md:bg-white/60;
-		}
 	}
 	@media screen and (max-width: 768px) {
 		nav {
 			--navInlineSpace: var(--navShrinkSpace);
 			--mobileCurvedSafeSpace: 1.5rem;
+			&.end {
+				--navInlineSpace: 3vw;
+				@apply bg-white md:bg-white/60;
+			}
 		}
 	}
 </style>
