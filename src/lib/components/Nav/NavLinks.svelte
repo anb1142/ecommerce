@@ -6,7 +6,7 @@
 	export let links = ['Shop'];
 </script>
 
-<a href={`/${pathname === '/' ? '' : '?has=1'}`}><img src="/logo.svg" alt="logo" /></a>
+<a href={`/`}><img src="/logo.svg" alt="logo" /></a>
 
 <div class="links">
 	{#each links as link}

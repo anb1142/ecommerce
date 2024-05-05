@@ -3,18 +3,11 @@
 	import Services from '@/components/Home/Services.svelte';
 	import Meta from '@/components/Meta.svelte';
 	import ShopCards from '@/components/shop/ShopCards.svelte';
-	import type { IImagedProduct } from '@/schemas';
-	import { productStore, updateProducts } from '@/stores/products.ts';
-	import { isPromise } from '@/utils/isPromise.ts';
+	import { updateProducts } from '@/stores/products.ts';
 	import { Facebook, Twitter, Youtube } from 'lucide-svelte';
-	import { onMount } from 'svelte';
-
 	export let data;
-	onMount(async () => {
-		updateProducts(await data.products);
-	});
-	if (!isPromise(data.products)) updateProducts(data.products as IImagedProduct[]);
-	$: products = Object.values($productStore).slice(0, 4);
+
+	updateProducts(data.products);
 
 	type ISocial = { href: string; Icon: typeof Facebook };
 	let socials: ISocial[] = [
@@ -29,8 +22,11 @@
 	<Hero />
 	<div class="popular">
 		<h1>Most Popular</h1>
-
-		<ShopCards {products} />
+		{#await data.products}
+			<ShopCards limit={4} />
+		{:then products}
+			<ShopCards {products} />
+		{/await}
 	</div>
 	<Services />
 </section>

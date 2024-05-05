@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { productStore } from '@/stores/products';
+	import { productList } from '@/stores/products';
 	import { getCart, type ICartState } from '@/utils/cart.ts';
 	import { onMount } from 'svelte';
 	import CartCheckout from './CartCheckout.svelte';
@@ -7,7 +7,7 @@
 	export let loaded: boolean = true;
 
 	let cart: ICartState = {};
-	$: products = Object.values($productStore).filter(({ id }) => id in cart);
+	$: products = $productList.filter(({ id }) => id in cart);
 	onMount(async () => {
 		cart = getCart();
 	});

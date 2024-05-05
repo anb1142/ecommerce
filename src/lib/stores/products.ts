@@ -1,39 +1,31 @@
 import type { IImagedProduct } from '@/schemas';
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 export const productStore = writable<Record<string, IImagedProduct>>({});
 
-const url = '/api/products';
-async function fetchProducts(ids: number[] = []) {
-	const res = await fetch(ids.length < 1 ? url : `${url}?ids=${ids.toString()}`);
-	const data = await res.json();
-	if (res.ok) return data.products as IImagedProduct[];
-	else throw new Error(data);
-}
+export const productList = derived(productStore, ($productStore) =>
+	Object.values($productStore)
+);
 
-export async function getProducts(ids: number[] | number = []) {
-	const newProducts = await fetchProducts(Array.isArray(ids) ? ids : [ids]);
-	setProducts(newProducts);
-}
+type INewProductRes = IImagedProduct[] | IImagedProduct;
+type INewProducts = Promise<INewProductRes> | INewProductRes;
 
-export async function setProducts(newProducts: IImagedProduct[] | IImagedProduct) {
-	if (Array.isArray(newProducts)) {
-		const productObj: Record<number, IImagedProduct> = {};
-		for (const product of newProducts) productObj[product.id] = product;
-		productStore.set(productObj);
-		return;
-	}
+export async function setProducts(newProducts: INewProducts) {
+	newProducts = await newProducts;
+	if (!Array.isArray(newProducts)) return updateProducts(newProducts);
+
+	const productObj: Record<number, IImagedProduct> = {};
+	for (const product of newProducts) productObj[product.id] = product;
+	productStore.set(productObj);
+}
+export async function updateProducts(newProducts: INewProducts) {
+	newProducts = await newProducts;
 	productStore.update((productObj) => {
-		productObj[newProducts.id] = newProducts;
+		if (!Array.isArray(newProducts)) {
+			productObj[newProducts.id] = newProducts;
+		} else {
+			for (const product of newProducts) productObj[product.id] = product;
+		}
 		return productObj;
 	});
-}
-export async function updateProducts(newProducts: IImagedProduct[] | IImagedProduct) {
-	productStore.update((productObj) => {
-		if (!Array.isArray(newProducts)) productObj[newProducts.id] = newProducts;
-		else for (const product of newProducts) productObj[product.id] = product;
-
-		return productObj;
-	});
-	return;
 }

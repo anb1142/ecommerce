@@ -2,13 +2,9 @@
 	import Nav from '@/components/Nav/Nav.svelte';
 	import ViewTransition from '@/components/ViewTransition.svelte';
 	import { setProducts } from '@/stores/products';
-	import { onMount } from 'svelte';
 
 	export let data;
-
-	onMount(async () => {
-		setProducts(await data.allProducts);
-	});
+	setProducts(data.allProducts);
 </script>
 
 <Nav />
@@ -22,7 +18,7 @@
 		--navHeight: 3.5rem;
 		--minH: 100dvh;
 		--inlinePadding: 1vw;
-		--defaultSpace: 0.7rem;
+		--defaultSpace: 0.5rem;
 
 		--navTopSpace: calc(var(--defaultSpace) * 2 + var(--navHeight));
 		--navBtmSpace: var(--defaultSpace);

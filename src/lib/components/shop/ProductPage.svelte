@@ -1,25 +1,32 @@
 <script lang="ts">
 	import ProductImages from '@/components/shop/ProductImages.svelte';
-	import type { IImagedProduct } from '@/schemas';
 	import CartButton from './Cart/CartButton.svelte';
+	import { page } from '$app/stores';
+	import { productStore } from '@/stores/products';
+	import Meta from '@/components/Meta.svelte';
+	import type { IImagedProduct } from '@/schemas';
 
-	export let product: IImagedProduct;
-	const { id, name, price, images, description } = product;
+	export let productId: number = Number($page.params.slug);
+	export let product: IImagedProduct = $productStore[productId];
 </script>
 
-<div style:--card="card-{id}" class="product">
-	<ProductImages {images} {id} />
-	<div class="info">
-		<div class="title">
-			<h1>{name}</h1>
-			<p>${price}</p>
+{#if product}
+	<Meta title={product.name} />
+
+	<div style:--card="card-{product.id}" class="product">
+		<ProductImages images={product.images} id={product.id} />
+		<div class="info">
+			<div class="title">
+				<h1>{product.name}</h1>
+				<p>${product.price}</p>
+			</div>
+			<div class="desc">
+				{product.description}
+			</div>
+			<CartButton id={product.id} />
 		</div>
-		<div class="desc">
-			{description}
-		</div>
-		<CartButton {id} />
 	</div>
-</div>
+{/if}
 
 <style lang="scss">
 	.product {

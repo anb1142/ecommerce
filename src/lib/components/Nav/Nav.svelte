@@ -15,6 +15,7 @@
 			document.body.offsetHeight > window.innerHeight);
 
 	onMount(() => {
+		checkPositions();
 		window.addEventListener('scroll', checkPositions);
 	});
 	onNavigate(checkPositions);

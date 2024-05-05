@@ -1,6 +1,6 @@
 import { getImagedProducts } from '@/utils/getProducts';
 
-export async function load() {
+export async function load({ isDataRequest }) {
 	const products = getImagedProducts();
-	return { products };
+	return { products: isDataRequest ? products : await products };
 }

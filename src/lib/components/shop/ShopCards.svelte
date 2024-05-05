@@ -1,8 +1,10 @@
 <script lang="ts">
 	import ShopCard from '@/components/shop/ShopCard.svelte';
 	import type { IImagedProduct } from '@/schemas';
+	import { productList } from '@/stores/products';
 
-	export let products: IImagedProduct[];
+	export let limit: number | undefined = undefined;
+	export let products: IImagedProduct[] = $productList.slice(0, limit);
 </script>
 
 <section>

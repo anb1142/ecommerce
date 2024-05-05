@@ -1,15 +1,16 @@
 <script>
 	import Meta from '@/components/Meta.svelte';
 	import ShopCards from '@/components/shop/ShopCards.svelte';
-	import { productStore, setProducts } from '@/stores/products.ts';
-	import { onMount } from 'svelte';
+	import { setProducts } from '@/stores/products.ts';
 	export let data;
-	onMount(async () => {
-		setProducts(await data.products);
-	});
-	$: products = Object.values($productStore);
+
+	setProducts(data.products);
 </script>
 
 <Meta title="Products" />
 <h1>Products</h1>
-<ShopCards {products} />
+{#await data.products}
+	<ShopCards />
+{:then products}
+	<ShopCards {products} />
+{/await}
