@@ -110,6 +110,7 @@
 			transform: translateY(100vh) scale(0.9);
 		}
 	}
+
 	@keyframes popopen {
 		0% {
 			transform: translateY(-100vh) scale(0.6);
@@ -121,19 +122,22 @@
 			transform: translateY(0) scale(1);
 		}
 	}
+	//TODO
+	// @keyframes fadein {
+	// 	0% {
+	// 		@apply bg-background/0 backdrop-blur-0;
+	// 	}
+	// 	100% {
+	// 		@apply bg-background/80 backdrop-blur-sm;
+	// 	}
+	// }
 
-	@keyframes fadein {
-		100% {
-			@apply bg-background/80 backdrop-blur-sm;
-		}
-	}
-
-	@keyframes fadeout {
-		0% {
-			@apply bg-background/80 backdrop-blur-sm;
-		}
-		100% {
-			@apply bg-background/0 backdrop-blur-0;
-		}
-	}
+	// @keyframes fadeout {
+	// 	0% {
+	// 		@apply bg-background/80 backdrop-blur-sm;
+	// 	}
+	// 	100% {
+	// 		@apply bg-background/0 backdrop-blur-0;
+	// 	}
+	// }
 </style>
