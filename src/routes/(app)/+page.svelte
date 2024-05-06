@@ -6,7 +6,6 @@
 	import { updateProducts } from '@/stores/products.ts';
 	import { Facebook, Twitter, Youtube } from 'lucide-svelte';
 	export let data;
-
 	updateProducts(data.products);
 
 	type ISocial = { href: string; Icon: typeof Facebook };
@@ -22,11 +21,7 @@
 	<Hero />
 	<div class="popular">
 		<h1>Most Popular</h1>
-		{#await data.products}
-			<ShopCards limit={4} />
-		{:then products}
-			<ShopCards {products} />
-		{/await}
+		<ShopCards newProducts={data.products} />
 	</div>
 	<Services />
 </section>

@@ -2,12 +2,22 @@
 	import ProductImages from '@/components/shop/ProductImages.svelte';
 	import CartButton from './Cart/CartButton.svelte';
 	import { page } from '$app/stores';
-	import { productStore } from '@/stores/products';
+	import { productStore, updateProducts } from '@/stores/products';
 	import Meta from '@/components/Meta.svelte';
 	import type { IImagedProduct } from '@/schemas';
+	import { onMount } from 'svelte';
+	import { isPromise } from '@/utils/isPromise';
 
 	export let productId: number = Number($page.params.slug);
+	export let newProduct: IImagedProduct | Promise<IImagedProduct> | undefined = undefined;
 	export let product: IImagedProduct = $productStore[productId];
+
+	if (newProduct && !isPromise(newProduct)) product = newProduct as IImagedProduct;
+	onMount(async () => {
+		if (!isPromise(newProduct)) return;
+		product = (await newProduct) as IImagedProduct;
+		updateProducts(product);
+	});
 </script>
 
 {#if product}

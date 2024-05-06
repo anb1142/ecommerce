@@ -1,10 +1,21 @@
 <script lang="ts">
 	import ShopCard from '@/components/shop/ShopCard.svelte';
 	import type { IImagedProduct } from '@/schemas';
-	import { productList } from '@/stores/products';
+	import { productList, setProducts } from '@/stores/products';
+	import { isPromise } from '@/utils/isPromise';
+	import { onMount } from 'svelte';
 
 	export let limit: number | undefined = undefined;
-	export let products: IImagedProduct[] = $productList.slice(0, limit);
+	export let newProducts: Promise<IImagedProduct[]> | IImagedProduct[] | undefined =
+		undefined;
+	let products: IImagedProduct[] = $productList.slice(0, limit);
+
+	if (newProducts && !isPromise(newProducts)) products = newProducts as IImagedProduct[];
+	onMount(async () => {
+		if (!isPromise(newProducts)) return;
+		products = (await newProducts) as IImagedProduct[];
+		setProducts(products);
+	});
 </script>
 
 <section>
