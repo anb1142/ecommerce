@@ -9,13 +9,18 @@ import {
 	varchar
 } from 'drizzle-orm/pg-core';
 
+const timestamps = {
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { mode: 'date' }).$onUpdate(() => new Date())
+};
+
 export const createTable = pgTableCreator((name) => `ecommerce_${name}`);
 
 export const category = createTable('category', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 100 }).notNull(),
 	parent_category_id: integer('parent_category_id'),
-	createdAt: timestamp('created_at').notNull().defaultNow()
+	...timestamps
 });
 
 export const product = createTable('product', {
@@ -25,13 +30,14 @@ export const product = createTable('product', {
 	description: text('description'),
 	category_id: integer('category_id').notNull(),
 	visible: boolean('visible').notNull().default(false),
-	createdAt: timestamp('created_at').notNull().defaultNow()
+	...timestamps
 });
 
 export const image = createTable('image', {
 	id: serial('id').primaryKey(),
 	alt: text('alt').notNull(),
-	url: text('url').notNull()
+	url: text('url').notNull(),
+	...timestamps
 });
 
 export const product_image = createTable('product_image', {
@@ -41,7 +47,8 @@ export const product_image = createTable('product_image', {
 		.references(() => product.id),
 	image_id: integer('image_id')
 		.notNull()
-		.references(() => image.id)
+		.references(() => image.id),
+	...timestamps
 });
 
 export const tables = {
