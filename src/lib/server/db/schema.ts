@@ -10,8 +10,8 @@ import {
 } from 'drizzle-orm/pg-core';
 
 const timestamps = {
-	createdAt: timestamp('created_at').notNull().defaultNow(),
-	updatedAt: timestamp('updated_at', { mode: 'date' })
+	created_at: timestamp('created_at').notNull().defaultNow(),
+	updated_at: timestamp('updated_at', { mode: 'date' })
 		.notNull()
 		.defaultNow()
 		.$onUpdate(() => new Date())
@@ -19,14 +19,14 @@ const timestamps = {
 
 export const createTable = pgTableCreator((name) => `ecommerce_${name}`);
 
-export const category = createTable('category', {
+export const tb_category = createTable('category', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 100 }).notNull(),
 	parent_category_id: integer('parent_category_id'),
 	...timestamps
 });
 
-export const product = createTable('product', {
+export const tb_product = createTable('product', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 100 }).notNull(),
 	price: numeric('price').notNull(),
@@ -36,29 +36,29 @@ export const product = createTable('product', {
 	...timestamps
 });
 
-export const image = createTable('image', {
+export const tb_image = createTable('image', {
 	id: serial('id').primaryKey(),
 	alt: text('alt').notNull(),
 	url: text('url').notNull(),
 	...timestamps
 });
 
-export const product_image = createTable('product_image', {
+export const tb_product_image = createTable('product_image', {
 	id: serial('id').primaryKey(),
 	product_id: integer('product_id')
 		.notNull()
-		.references(() => product.id),
+		.references(() => tb_product.id),
 	image_id: integer('image_id')
 		.notNull()
-		.references(() => image.id),
+		.references(() => tb_image.id),
 	...timestamps
 });
 
 export const tables = {
-	category,
-	product,
-	image,
-	product_image
+	category: tb_category,
+	product: tb_product,
+	image: tb_image,
+	product_image: tb_product_image
 };
 
 export type ITableName = keyof typeof tables;

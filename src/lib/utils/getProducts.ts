@@ -1,12 +1,12 @@
 import type { IImagedProduct } from '@/schemas';
 import { db } from '@/server/db';
-import { image, product, product_image } from '@/server/db/schema';
+import { tb_image, tb_product, tb_product_image } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 type IRes = {
-	product: typeof product.$inferSelect;
-	image: typeof image.$inferSelect;
-	product_image: typeof product_image.$inferSelect;
+	product: typeof tb_product.$inferSelect;
+	image: typeof tb_image.$inferSelect;
+	product_image: typeof tb_product_image.$inferSelect;
 };
 const imageProduct = (rows: IRes[], row: IRes) => {
 	const p = row.product as IImagedProduct;
@@ -20,10 +20,10 @@ const imageProduct = (rows: IRes[], row: IRes) => {
 export const getImagedProduct = async (id: number) => {
 	const rows = await db
 		.select()
-		.from(product)
-		.innerJoin(product_image, eq(product_image.product_id, product.id))
-		.innerJoin(image, eq(product_image.image_id, image.id))
-		.where(eq(product.id, id));
+		.from(tb_product)
+		.innerJoin(tb_product_image, eq(tb_product_image.product_id, tb_product.id))
+		.innerJoin(tb_image, eq(tb_product_image.image_id, tb_image.id))
+		.where(eq(tb_product.id, id));
 
 	const p = imageProduct(rows, rows[0]);
 	return p;
@@ -35,12 +35,12 @@ export const getImagedProducts = async (
 ) => {
 	const query = db
 		.select()
-		.from(product)
-		.where(eq(product.visible, true))
+		.from(tb_product)
+		.where(eq(tb_product.visible, true))
 		.limit(limit || 0)
 		.offset(offset || 0)
-		.innerJoin(product_image, eq(product_image.product_id, product.id))
-		.innerJoin(image, eq(product_image.image_id, image.id));
+		.innerJoin(tb_product_image, eq(tb_product_image.product_id, tb_product.id))
+		.innerJoin(tb_image, eq(tb_product_image.image_id, tb_image.id));
 
 	const rows = await query;
 

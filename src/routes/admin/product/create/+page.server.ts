@@ -1,11 +1,11 @@
 import { productFields, type IField } from '@/schemas';
 import { db } from '@/server/db';
-import { category, product } from '@/server/db/schema';
+import { tb_category, tb_product } from '@/server/db/schema';
 import { extractFormValues } from '@/utils/extractFormValues';
 import { redirect } from '@sveltejs/kit';
 
 const getCategoriesForSelect = async () =>
-	await db.select({ value: category.id, label: category.name }).from(category);
+	await db.select({ value: tb_category.id, label: tb_category.name }).from(tb_category);
 
 const getFields = async () => {
 	const categories = {
@@ -27,7 +27,7 @@ export const actions = {
 		const formData = await request.formData();
 		const data = extractFormValues(fields, formData);
 		const { id } = (
-			await db.insert(product).values(data).returning({ id: product.id })
+			await db.insert(tb_product).values(data).returning({ id: tb_product.id })
 		)[0];
 		redirect(303, `/admin/product/edit?id=${id}`);
 	}

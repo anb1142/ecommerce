@@ -1,4 +1,4 @@
-import type { ITableName, product } from '@/server/db/schema';
+import type { ITableName, tb_product } from '@/server/db/schema';
 import type { ISelectTableByName } from '@/utils/selectTable';
 export type optType = {
 	value: string | number;
@@ -37,7 +37,7 @@ export type IImages = {
 	id: number;
 };
 
-export type IProduct = typeof product.$inferSelect;
+export type IProduct = typeof tb_product.$inferSelect;
 export type IImagedProduct = IProduct & { images: IImages[] };
 
 export const productFields = [
