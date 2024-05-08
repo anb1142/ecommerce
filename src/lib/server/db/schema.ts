@@ -11,7 +11,10 @@ import {
 
 const timestamps = {
 	createdAt: timestamp('created_at').notNull().defaultNow(),
-	updatedAt: timestamp('updated_at', { mode: 'date' }).$onUpdate(() => new Date())
+	updatedAt: timestamp('updated_at', { mode: 'date' })
+		.notNull()
+		.defaultNow()
+		.$onUpdate(() => new Date())
 };
 
 export const createTable = pgTableCreator((name) => `ecommerce_${name}`);

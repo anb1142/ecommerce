@@ -15,6 +15,13 @@
       "when": 1715149432093,
       "tag": "0001_pink_king_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1715150113523,
+      "tag": "0002_crazy_vance_astro",
+      "breakpoints": true
     }
   ]
 }
